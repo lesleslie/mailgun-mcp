@@ -17,6 +17,11 @@ dev = [
     "session-mgmt-mcp>=0.4.0",
 ]
 
+[tool.mailgun-mcp]
+http_port = 3039
+http_host = "127.0.0.1"
+enable_http_transport = true
+
 [tool.ruff]
 target-version = "py313"
 line-length = 88
@@ -46,7 +51,7 @@ fixable = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 timeout = 300
-addopts = "--cov=crackerjack --cov-report=term"
+addopts = "--cov=mailgun_mcp --cov-report=term"
 markers = [
     "unit: marks test as a unit test",
     "benchmark: mark test as a benchmark",
