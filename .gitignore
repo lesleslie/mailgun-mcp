@@ -1,0 +1,8 @@
+/.benchmarks/
+/.claude/
+/htmlcov/
+/__pycache__/
+__pycache__/
+/.venv/
+/.envrc
+/.coverage
