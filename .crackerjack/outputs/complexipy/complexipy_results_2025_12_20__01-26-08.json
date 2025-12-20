@@ -36,6 +36,12 @@
     "path": "main.py"
   },
   {
+    "complexity": 1,
+    "file_name": "main.py",
+    "function_name": "_http_request",
+    "path": "main.py"
+  },
+  {
     "complexity": 2,
     "file_name": "main.py",
     "function_name": "add_complaint",
@@ -212,7 +218,19 @@
   {
     "complexity": 5,
     "file_name": "main.py",
+    "function_name": "_try_acb_adapter_request",
+    "path": "main.py"
+  },
+  {
+    "complexity": 5,
+    "file_name": "main.py",
     "function_name": "get_stats",
+    "path": "main.py"
+  },
+  {
+    "complexity": 6,
+    "file_name": "main.py",
+    "function_name": "_make_httpx_request",
     "path": "main.py"
   },
   {
@@ -255,12 +273,6 @@
     "complexity": 10,
     "file_name": "main.py",
     "function_name": "send_message",
-    "path": "main.py"
-  },
-  {
-    "complexity": 18,
-    "file_name": "main.py",
-    "function_name": "_http_request",
     "path": "main.py"
   },
   {
