@@ -1,0 +1,322 @@
+{
+  "functions": [
+    {
+      "complexity": 10,
+      "file_name": "debug_test.py",
+      "function_name": "debug_test",
+      "path": "debug_test.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "main.py",
+      "function_name": "BasicAuth::__getattr__",
+      "path": "main.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "main.py",
+      "function_name": "BasicAuth::__init__",
+      "path": "main.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "main.py",
+      "function_name": "BasicAuth::__repr__",
+      "path": "main.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "main.py",
+      "function_name": "get_mailgun_api_key",
+      "path": "main.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "main.py",
+      "function_name": "get_mailgun_domain",
+      "path": "main.py"
+    },
+    {
+      "complexity": 1,
+      "file_name": "main.py",
+      "function_name": "_http_request",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "add_complaint",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "add_unsubscribe",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "create_webhook",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_bounce",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_complaint",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_domain",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_route",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_template",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_unsubscribe",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "delete_webhook",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_bounces",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_complaints",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_domain",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_domains",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_route",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_routes",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_template",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_templates",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_unsubscribes",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_webhook",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "get_webhooks",
+      "path": "main.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "main.py",
+      "function_name": "verify_domain",
+      "path": "main.py"
+    },
+    {
+      "complexity": 3,
+      "file_name": "main.py",
+      "function_name": "create_route",
+      "path": "main.py"
+    },
+    {
+      "complexity": 3,
+      "file_name": "main.py",
+      "function_name": "get_masked_api_key",
+      "path": "main.py"
+    },
+    {
+      "complexity": 4,
+      "file_name": "main.py",
+      "function_name": "_get_requests_adapter",
+      "path": "main.py"
+    },
+    {
+      "complexity": 4,
+      "file_name": "main.py",
+      "function_name": "add_bounce",
+      "path": "main.py"
+    },
+    {
+      "complexity": 4,
+      "file_name": "main.py",
+      "function_name": "create_template",
+      "path": "main.py"
+    },
+    {
+      "complexity": 5,
+      "file_name": "main.py",
+      "function_name": "BasicAuth::__eq__",
+      "path": "main.py"
+    },
+    {
+      "complexity": 5,
+      "file_name": "main.py",
+      "function_name": "_make_request_with_adapter",
+      "path": "main.py"
+    },
+    {
+      "complexity": 5,
+      "file_name": "main.py",
+      "function_name": "_try_acb_adapter_request",
+      "path": "main.py"
+    },
+    {
+      "complexity": 5,
+      "file_name": "main.py",
+      "function_name": "get_stats",
+      "path": "main.py"
+    },
+    {
+      "complexity": 6,
+      "file_name": "main.py",
+      "function_name": "_make_httpx_request",
+      "path": "main.py"
+    },
+    {
+      "complexity": 6,
+      "file_name": "main.py",
+      "function_name": "create_domain",
+      "path": "main.py"
+    },
+    {
+      "complexity": 6,
+      "file_name": "main.py",
+      "function_name": "get_events",
+      "path": "main.py"
+    },
+    {
+      "complexity": 6,
+      "file_name": "main.py",
+      "function_name": "update_route",
+      "path": "main.py"
+    },
+    {
+      "complexity": 7,
+      "file_name": "main.py",
+      "function_name": "validate_api_key_at_startup",
+      "path": "main.py"
+    },
+    {
+      "complexity": 8,
+      "file_name": "main.py",
+      "function_name": "update_template",
+      "path": "main.py"
+    },
+    {
+      "complexity": 10,
+      "file_name": "main.py",
+      "function_name": "_normalize_auth_for_provider",
+      "path": "main.py"
+    },
+    {
+      "complexity": 10,
+      "file_name": "main.py",
+      "function_name": "send_message",
+      "path": "main.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::__init__",
+      "path": "process_utils.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::get_pid",
+      "path": "process_utils.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::get_status",
+      "path": "process_utils.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::is_running",
+      "path": "process_utils.py"
+    },
+    {
+      "complexity": 2,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::start_server",
+      "path": "process_utils.py"
+    },
+    {
+      "complexity": 5,
+      "file_name": "process_utils.py",
+      "function_name": "ServerManager::stop_server",
+      "path": "process_utils.py"
+    }
+  ],
+  "targets": [
+    "/Users/les/Projects/mailgun-mcp/debug_test.py",
+    "/Users/les/Projects/mailgun-mcp/mailgun_mcp/__init__.py",
+    "/Users/les/Projects/mailgun-mcp/mailgun_mcp/main.py",
+    "/Users/les/Projects/mailgun-mcp/mailgun_mcp/utils/process_utils.py"
+  ]
+}

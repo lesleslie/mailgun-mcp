@@ -28,7 +28,7 @@ class ServerManager:
         try:
             pid = int(self.pid_file.read_text().strip())
             return pid
-        except (IOError, ValueError):
+        except (OSError, ValueError):
             return None
 
     def is_running(self) -> bool:
@@ -73,7 +73,7 @@ class ServerManager:
             typer.echo(
                 f"Started UniFi MCP server on {host}:{port} (PID: {process.pid})"
             )
-        except IOError as e:
+        except OSError as e:
             typer.echo(f"Error writing PID file: {e}", err=True)
             process.kill()
             raise typer.Exit(1)
@@ -102,8 +102,6 @@ class ServerManager:
         """Prints the current status of the server."""
         pid = self.get_pid()
         if self.is_running():
-            typer.echo(
-                f"UniFi MCP server is RUNNING (PID: {pid})"
-            )
+            typer.echo(f"UniFi MCP server is RUNNING (PID: {pid})")
         else:
             typer.echo("UniFi MCP server is STOPPED.")

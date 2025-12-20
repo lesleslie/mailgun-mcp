@@ -8,13 +8,14 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "fastmcp",
+    "mcp-common",
 ]
 
 [dependency-groups]
 dev = [
     "crackerjack>=0.39.1",
     "excalidraw-mcp>=0.34.0",
-    "session-mgmt-mcp>=0.4.0",
+    "session-buddy>=0.4.0",
 ]
 
 [tool.mailgun-mcp]
@@ -63,3 +64,6 @@ markers = [
 paths = [
     "mailgun_mcp",
 ]
+
+[tool.uv.sources.mcp-common]
+path = "../mcp-common"
