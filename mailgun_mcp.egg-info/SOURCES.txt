@@ -1,0 +1,11 @@
+README.md
+pyproject.toml
+mailgun_mcp/__init__.py
+mailgun_mcp/main.py
+mailgun_mcp.egg-info/PKG-INFO
+mailgun_mcp.egg-info/SOURCES.txt
+mailgun_mcp.egg-info/dependency_links.txt
+mailgun_mcp.egg-info/requires.txt
+mailgun_mcp.egg-info/top_level.txt
+mailgun_mcp/utils/process_utils.py
+tests/test_main.py
