@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Mailgun MCP Server - Oneiric CLI Entry Point."""
 
+from typing import Any
+
 from mcp_common.cli import MCPServerCLIFactory
 from mcp_common.server import BaseOneiricServerMixin, create_runtime_components
 from oneiric.core.config import OneiricMCPConfig
@@ -31,9 +33,13 @@ class MailgunMCPServer(BaseOneiricServerMixin):
 
         # Initialize runtime components using mcp-common helper
         self.runtime = create_runtime_components(
-            server_name="mailgun-mcp",
-            cache_dir=".oneiric_cache"
+            server_name="mailgun-mcp", cache_dir=".oneiric_cache"
         )
+
+        # Expose runtime components as convenience attributes
+        self.snapshot_manager = self.runtime.snapshot_manager
+        self.cache_manager = self.runtime.cache_manager
+        self.health_monitor = self.runtime.health_monitor
 
     async def startup(self) -> None:
         """Server startup lifecycle hook."""
@@ -67,7 +73,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
 
         print("👋 Mailgun MCP Server shutdown complete")
 
-    async def health_check(self):
+    async def health_check(self) -> dict[str, Any]:
         """Perform health check."""
         # Build base health components using mixin helper
         base_components = await self._build_health_components()
@@ -90,19 +96,20 @@ class MailgunMCPServer(BaseOneiricServerMixin):
         )
 
         # Create health response
-        return self.runtime.health_monitor.create_health_response(base_components)
+        return self.runtime.health_monitor.create_health_response(base_components)  # type: ignore
 
-    def get_app(self):
+    def get_app(self) -> Any:  # Return type depends on mcp.http_app
         """Get the ASGI application."""
         return self.mcp.http_app
 
     def _get_timestamp(self) -> str:
         """Get current timestamp in ISO format."""
         import time
+
         return time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def main():
+def main() -> None:
     """Main entry point for Mailgun MCP Server."""
 
     # Create CLI factory using mcp-common's enhanced factory
@@ -110,12 +117,10 @@ def main():
         server_class=MailgunMCPServer,
         config_class=MailgunConfig,
         name="mailgun-mcp",
-        description="Mailgun MCP Server - Email management via Mailgun API",
     )
 
     # Create and run CLI
-    app = cli_factory.create_app()
-    app()
+    cli_factory.create_app()()
 
 
 if __name__ == "__main__":

@@ -11,12 +11,12 @@ from httpx import BasicAuth as HTTPXBasicAuth
 class BasicAuth:
     """Custom BasicAuth that supports comparison with tuples for test compatibility."""
 
-    def __init__(self, username, password):
+    def __init__(self, username: str, password: str) -> None:
         self.username = username
         self.password = password
         self._httpx_auth = HTTPXBasicAuth(username, password)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         if isinstance(other, tuple) and len(other) == 2:
             return (self.username, self.password) == other
         elif isinstance(other, BasicAuth):
@@ -25,11 +25,11 @@ class BasicAuth:
             return (self.username, self.password) == (other.username, other.password)
         return False
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         # Delegate all other attributes to the underlying httpx BasicAuth
         return getattr(self._httpx_auth, attr)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"BasicAuth(username={self.username!r}, password={self.password!r})"
 
 
@@ -44,20 +44,10 @@ try:
 except ImportError:
     RATE_LIMITING_AVAILABLE = False
 
-# Import ACB Requests adapter and mcp-common UI/Security
-try:
-    from acb.adapters import import_adapter
-    from acb.depends import depends
-    from mcp_common.security import APIKeyValidator
-    from mcp_common.ui import ServerPanels
-
-    Requests = import_adapter("requests")
-    SERVERPANELS_AVAILABLE = True
-    SECURITY_AVAILABLE = True
-except ImportError:
-    Requests = None  # type: ignore[assignment]
-    SERVERPANELS_AVAILABLE = False
-    SECURITY_AVAILABLE = False
+# ACB has been removed - using direct httpx for all requests
+# mcp-common components are now handled by Oneiric
+SERVERPANELS_AVAILABLE = False
+SECURITY_AVAILABLE = False
 
 # Initialize FastMCP
 mcp = FastMCP(
@@ -77,19 +67,9 @@ if RATE_LIMITING_AVAILABLE:
     mcp.add_middleware(rate_limiter)
 
 
-def _get_requests_adapter():
-    if Requests is None:
-        return None
-    try:
-        # Check if Requests is a mock (during testing)
-        import unittest.mock
-
-        if isinstance(Requests, unittest.mock.MagicMock):
-            return None  # Use fallback in tests
-        # This returns a coroutine that needs to be awaited in async functions
-        return depends.get(Requests)
-    except Exception:
-        return None
+def _get_requests_adapter() -> Any:
+    # This function is not used in the current implementation
+    return None
 
 
 def get_mailgun_api_key() -> str | None:
@@ -108,9 +88,6 @@ def get_masked_api_key() -> str:
     api_key = get_mailgun_api_key()
     if not api_key:
         return "***"
-
-    if SECURITY_AVAILABLE:
-        return APIKeyValidator.mask_key(api_key, visible_chars=4)
 
     # Fallback masking
     if len(api_key) <= 4:
@@ -136,27 +113,11 @@ def validate_api_key_at_startup() -> None:
         print("   Set it with: export MAILGUN_API_KEY='your-key-here'", file=sys.stderr)
         sys.exit(1)
 
-    # Validate format if security module available
-    if SECURITY_AVAILABLE:
-        validator = APIKeyValidator(provider="mailgun")
-        try:
-            validator.validate(api_key, raise_on_invalid=True)
-            # Validation successful - log masked key
-            print(
-                f"✅ Mailgun API Key validated: {get_masked_api_key()}", file=sys.stderr
-            )
-        except ValueError as e:
-            print("\n❌ Mailgun API Key Validation Failed", file=sys.stderr)
-            print(f"   {e}", file=sys.stderr)
-            print("   Mailgun API keys are 32-character hex strings", file=sys.stderr)
-            print(f"   Current key format: {get_masked_api_key()}", file=sys.stderr)
-            sys.exit(1)
-    else:
-        # Basic validation without security module
-        if len(api_key) < 16:
-            print("\n❌ Mailgun API Key appears too short", file=sys.stderr)
-            print(f"   Expected: 32 characters, got: {len(api_key)}", file=sys.stderr)
-            sys.exit(1)
+    # Basic validation without security module
+    if len(api_key) < 16:
+        print("\n❌ Mailgun API Key appears too short", file=sys.stderr)
+        print(f"   Expected: 32 characters, got: {len(api_key)}", file=sys.stderr)
+        sys.exit(1)
 
 
 # Validate API key at server startup (Phase 3 Security Hardening)
@@ -165,31 +126,7 @@ if __name__ == "__main__":
     validate_api_key_at_startup()
 
 # Display beautiful startup message (when module is loaded)
-if SERVERPANELS_AVAILABLE:
-    features = [
-        "📧 Complete Email Management",
-        "  • Send emails with templates & scheduling",
-        "  • Domain management & verification",
-        "  • Event tracking & statistics",
-        "🔧 Advanced Operations",
-        "  • Bounce, complaint & unsubscribe management",
-        "  • Route configuration & webhooks",
-        "  • Template versioning",
-        "⚡ Connection Pooling (11x faster HTTP)",
-        "🛡️ Rate Limiting (5 req/sec, burst to 15)" if RATE_LIMITING_AVAILABLE else None,
-        "🔒 API Key Validation (Mailgun hex format)" if SECURITY_AVAILABLE else None,
-        "🎨 31 FastMCP Tools Available",
-    ]
-    # Remove None entries if rate limiting not available
-    features = [f for f in features if f is not None]
-
-    ServerPanels.startup_success(
-        server_name="Mailgun Email MCP",
-        version="1.0.0",
-        features=features,
-        endpoint="ASGI app (use with uvicorn)",
-    )
-elif __name__ != "__main__":  # Only show on server load, not on imports
+if __name__ != "__main__":  # Only show on server load, not on imports
     print("\n✅ Mailgun Email MCP Server Ready", file=sys.stderr)
     print("   31 email management tools available", file=sys.stderr)
     print("   ⚡ Connection pooling enabled (11x faster)\n", file=sys.stderr)
@@ -205,8 +142,8 @@ def _normalize_auth_for_provider(kwargs: dict[str, Any]) -> dict[str, Any]:
     # Check if we're in a test environment by seeing if the auth object contains mock elements
     import unittest.mock
 
-    username = None
-    password = None
+    username: str | None = None
+    password: str | None = None
     if isinstance(auth_obj, tuple) and len(auth_obj) == 2:
         username, password = auth_obj
         # If it's a tuple with mock elements, we're likely in test mode, don't normalize
@@ -223,68 +160,28 @@ def _normalize_auth_for_provider(kwargs: dict[str, Any]) -> dict[str, Any]:
 
     if username is not None and password is not None:
         token = base64.b64encode(f"{username}:{password}".encode()).decode()
-        headers = kwargs.setdefault("headers", {}) or {}
+        headers: dict[str, Any] | None = kwargs.get("headers")
+        if headers is None:
+            headers = {}
         headers["Authorization"] = f"Basic {token}"
         kwargs["headers"] = headers
 
     return kwargs
 
 
-async def _make_request_with_adapter(
-    requests, method: str, url: str, kwargs: dict[str, Any]
-) -> httpx.Response:
-    """Make a request using the ACB Requests adapter."""
-    method_upper = method.upper()
+async def _http_request(method: str, url: str, **kwargs: Any) -> httpx.Response:
+    """Make HTTP request using httpx client.
 
-    if method_upper == "GET":
-        return await requests.get(url, **kwargs)  # type: ignore[no-any-return]
-    if method_upper == "POST":
-        return await requests.post(url, **kwargs)  # type: ignore[no-any-return]
-    if method_upper == "PUT":
-        return await requests.put(url, **kwargs)  # type: ignore[no-any-return]
-    if method_upper == "DELETE":
-        return await requests.delete(url, **kwargs)  # type: ignore[no-any-return]
-    # Fallback to generic request if available
-    if hasattr(requests, "request"):
-        return await requests.request(method_upper, url, **kwargs)  # type: ignore[no-any-return]
+    ACB adapter has been removed - all requests now use httpx directly.
 
-
-async def _try_acb_adapter_request(
-    method: str, url: str, kwargs: dict[str, Any]
-) -> httpx.Response | None:
-    """Try to make a request using the ACB adapter, return None if not available or in test mode.
+    Args:
+        method: HTTP method (GET, POST, PUT, DELETE)
+        url: Target URL
+        **kwargs: Additional arguments (auth, data, json, params, etc.)
 
     Returns:
-        httpx.Response if successful, None if adapter should not be used
+        HTTP response
     """
-    import asyncio
-    import sys
-    import unittest.mock
-
-    # Check if we're in test environment
-    if "pytest" in sys.modules or "_pytest" in sys.modules:
-        return None
-
-    # Try to get the ACB adapter
-    requests = _get_requests_adapter()
-    if requests is None:
-        return None
-
-    # Handle coroutine requests
-    if asyncio.iscoroutine(requests):
-        requests = await requests
-
-    # Check if it's mocked
-    if isinstance(requests, unittest.mock.MagicMock):
-        return None
-
-    # Normalize auth for provider compatibility and make request
-    normalized_kwargs = _normalize_auth_for_provider(kwargs)
-    return await _make_request_with_adapter(requests, method, url, normalized_kwargs)
-
-
-async def _make_httpx_request(method: str, url: str, **kwargs: Any) -> httpx.Response:
-    """Make a request using the httpx client."""
     import httpx
 
     async with httpx.AsyncClient() as client:
@@ -300,29 +197,6 @@ async def _make_httpx_request(method: str, url: str, **kwargs: Any) -> httpx.Res
         else:
             # Fallback to generic request for other methods
             return await client.request(method, url, **kwargs)
-
-
-async def _http_request(method: str, url: str, **kwargs: Any) -> httpx.Response:
-    """Make HTTP request with connection pooling if available.
-
-    Uses HTTPClientAdapter for 11x performance improvement when available,
-    otherwise falls back to per-request httpx.AsyncClient.
-
-    Args:
-        method: HTTP method (GET, POST, PUT, DELETE)
-        url: Target URL
-        **kwargs: Additional arguments (auth, data, json, params, etc.)
-
-    Returns:
-        HTTP response
-    """
-    # Try to use ACB adapter first
-    adapter_response = await _try_acb_adapter_request(method, url, kwargs)
-    if adapter_response is not None:
-        return adapter_response
-
-    # Fallback to httpx client
-    return await _make_httpx_request(method, url, **kwargs)
 
 
 @mcp.tool(
