@@ -11,7 +11,7 @@ from oneiric.core.cli import MCPServerCLIFactory
 def test_cli_commands():
     """Test individual CLI commands."""
     print("🚀 Testing Mailgun MCP CLI commands...")
-    
+
     # Create CLI factory
     config = MailgunConfig()
     cli_factory = MCPServerCLIFactory(
@@ -22,7 +22,7 @@ def test_cli_commands():
         legacy_flags=False,
         description="Mailgun MCP Server - Email management via Mailgun API"
     )
-    
+
     print("\n1. Testing config command...")
     try:
         # Test config command by accessing the method directly
@@ -30,7 +30,7 @@ def test_cli_commands():
         print("✅ Config command test passed")
     except Exception as e:
         print(f"❌ Config command test failed: {e}")
-    
+
     print("\n2. Testing health command...")
     try:
         # Test health command
@@ -38,7 +38,7 @@ def test_cli_commands():
         print("✅ Health command test passed")
     except Exception as e:
         print(f"❌ Health command test failed: {e}")
-    
+
     print("\n3. Testing status command...")
     try:
         # Test status command
@@ -46,7 +46,7 @@ def test_cli_commands():
         print("✅ Status command test passed")
     except Exception as e:
         print(f"❌ Status command test failed: {e}")
-    
+
     print("\n4. Testing server creation for start command...")
     try:
         # Test server creation (part of start command)
@@ -54,7 +54,7 @@ def test_cli_commands():
         print(f"✅ Server creation test passed: {server}")
     except Exception as e:
         print(f"❌ Server creation test failed: {e}")
-    
+
     print("\n5. Testing startup lifecycle...")
     try:
         # Test startup lifecycle
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     try:
         test_cli_commands()
         print("\n🎉 CLI commands test completed!")
-        
+
     except Exception as e:
         print(f"\n❌ Test failed: {e}")
         import traceback
