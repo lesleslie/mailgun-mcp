@@ -1,6 +1,6 @@
 [project]
 name = "mailgun-mcp"
-version = "0.2.2"
+version = "0.2.3"
 description = "Unofficial MCP server for the Mailgun API"
 authors = [
     { name = "Les Leslie", email = "les@wedgwoodwebworks.com" },
