@@ -1,7 +1,7 @@
 {
-  "orchestrator_pid": 21474,
-  "updated_at": "2026-01-05T14:24:39.365512+00:00",
-  "watchers_running": false,
+  "orchestrator_pid": 49724,
+  "updated_at": "2026-01-05T19:48:58.479312+00:00",
+  "watchers_running": true,
   "remote_enabled": false,
   "last_remote_sync_at": null,
   "last_remote_error": null,

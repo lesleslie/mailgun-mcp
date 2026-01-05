@@ -1,1 +1,10 @@
-{"last_event": {}, "last_workflow": {"workflow": "crackerjack", "node_count": 6, "entry_nodes": ["configuration"], "nodes": [{"node": "configuration", "task": "configuration", "depends_on": [], "duration_ms": 6.3823820091784, "attempts": 1, "retry_policy": null}, {"node": "fast_hooks", "task": "fast_hooks", "depends_on": ["configuration"], "duration_ms": 38530.54035909008, "attempts": 1, "retry_policy": null}, {"node": "tests", "task": "tests", "depends_on": ["fast_hooks"], "duration_ms": 56712.00234000571, "attempts": 1, "retry_policy": null}, {"node": "comprehensive_hooks", "task": "comprehensive_hooks", "depends_on": ["tests"], "duration_ms": 138815.35862199962, "attempts": 1, "retry_policy": null}, {"node": "publishing", "task": "publishing", "depends_on": ["comprehensive_hooks"], "duration_ms": 15684.38941903878, "attempts": 1, "retry_policy": null}, {"node": "commit", "task": "commit", "depends_on": ["publishing"], "duration_ms": 2.605073037557304, "attempts": 1, "retry_policy": null}], "total_duration_ms": 249751.27819518093, "recorded_at": "2026-01-04T08:41:05.403643+00:00"}}
+{
+  "orchestrator_pid": 49724,
+  "started_at": "2026-01-05T16:48:20.907020+00:00",
+  "updated_at": "2026-01-05T19:48:58.481033+00:00",
+  "uptime_seconds": 10837.573737,
+  "counters": {
+    "startup_events": 1,
+    "snapshot_updates": 362
+  }
+}

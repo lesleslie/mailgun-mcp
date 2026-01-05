@@ -1,25 +1,25 @@
 {
-  "server_name": "mailgun-mcp",
-  "timestamp": "2026-01-05T06-17-11",
-  "version": "1.0",
   "components": {
-    "server": {
-      "status": "started",
-      "timestamp": "2026-01-05T06:17:11Z",
-      "config": {
-        "http_port": 3039,
-        "http_host": "127.0.0.1",
-        "debug": false,
-        "enable_http_transport": true
-      }
-    },
     "api_key": {
       "status": "validated",
+      "timestamp": "2026-01-05T06:17:11Z"
+    },
+    "server": {
+      "config": {
+        "debug": false,
+        "enable_http_transport": true,
+        "http_host": "127.0.0.1",
+        "http_port": 3039
+      },
+      "status": "started",
       "timestamp": "2026-01-05T06:17:11Z"
     }
   },
   "metadata": {
-    "system_time": 1767622631.16188,
-    "python_version": "3.13"
-  }
+    "python_version": "3.13",
+    "system_time": 1767622631.16188
+  },
+  "server_name": "mailgun-mcp",
+  "timestamp": "2026-01-05T06-17-11",
+  "version": "1.0"
 }
