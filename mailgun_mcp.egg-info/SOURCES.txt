@@ -9,5 +9,8 @@ mailgun_mcp.egg-info/dependency_links.txt
 mailgun_mcp.egg-info/requires.txt
 mailgun_mcp.egg-info/top_level.txt
 mailgun_mcp/utils/process_utils.py
+tests/test_additional_functions.py
+tests/test_additional_parameter_combinations.py
 tests/test_mailgun_runtime.py
 tests/test_main.py
+tests/test_uncovered_functions.py
