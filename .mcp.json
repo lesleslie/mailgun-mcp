@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "mailgun": {
-      "type": "http",
-      "url": "http://localhost:3039/mcp"
-    }
-  }
-}

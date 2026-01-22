@@ -1,10 +1,1 @@
-{
-  "orchestrator_pid": 49724,
-  "started_at": "2026-01-05T16:48:20.907020+00:00",
-  "updated_at": "2026-01-05T19:49:58.492837+00:00",
-  "uptime_seconds": 10897.585601,
-  "counters": {
-    "startup_events": 1,
-    "snapshot_updates": 364
-  }
-}
+{"last_event": {}, "last_workflow": {"workflow": "crackerjack", "node_count": 6, "entry_nodes": ["configuration"], "nodes": [{"node": "configuration", "task": "configuration", "depends_on": [], "duration_ms": 4.6596869942732155, "attempts": 1, "retry_policy": null}, {"node": "fast_hooks", "task": "fast_hooks", "depends_on": ["configuration"], "duration_ms": 147903.96940600476, "attempts": 1, "retry_policy": null}, {"node": "tests", "task": "tests", "depends_on": ["fast_hooks"], "duration_ms": 58832.095745019615, "attempts": 1, "retry_policy": null}, {"node": "comprehensive_hooks", "task": "comprehensive_hooks", "depends_on": ["tests"], "duration_ms": 98755.78016700456, "attempts": 1, "retry_policy": null}, {"node": "publishing", "task": "publishing", "depends_on": ["comprehensive_hooks"], "duration_ms": 0.7218300015665591, "attempts": 1, "retry_policy": null}, {"node": "commit", "task": "commit", "depends_on": ["publishing"], "duration_ms": 0.29798998730257154, "attempts": 1, "retry_policy": null}], "total_duration_ms": 305497.5248250121, "recorded_at": "2026-01-22T19:42:50.020724+00:00"}}

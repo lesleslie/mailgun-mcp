@@ -9,6 +9,12 @@
     {
       "complexity": 0,
       "file_name": "__main__.py",
+      "function_name": "MailgunMCPServer::_cfg",
+      "path": "mailgun_mcp/__main__.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "__main__.py",
       "function_name": "MailgunMCPServer::_get_timestamp",
       "path": "mailgun_mcp/__main__.py"
     },
@@ -16,6 +22,12 @@
       "complexity": 0,
       "file_name": "__main__.py",
       "function_name": "MailgunMCPServer::get_app",
+      "path": "mailgun_mcp/__main__.py"
+    },
+    {
+      "complexity": 0,
+      "file_name": "__main__.py",
+      "function_name": "MailgunMCPServer::health_check",
       "path": "mailgun_mcp/__main__.py"
     },
     {
@@ -34,12 +46,6 @@
       "complexity": 0,
       "file_name": "__main__.py",
       "function_name": "main",
-      "path": "mailgun_mcp/__main__.py"
-    },
-    {
-      "complexity": 1,
-      "file_name": "__main__.py",
-      "function_name": "MailgunMCPServer::health_check",
       "path": "mailgun_mcp/__main__.py"
     },
     {

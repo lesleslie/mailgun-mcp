@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Mailgun MCP Server - Oneiric CLI Entry Point."""
 
-from typing import Any
+from typing import Any, cast
 
 from mcp_common.cli import MCPServerCLIFactory
 from mcp_common.server import BaseOneiricServerMixin, create_runtime_components
@@ -28,7 +28,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
     """Mailgun MCP Server with Oneiric integration."""
 
     def __init__(self, config: MailgunConfig):
-        self.config = config
+        self.config = config  # type: ignore[assignment]
         self.mcp = mcp  # Use the existing FastMCP instance
 
         # Initialize runtime components using mcp-common helper
@@ -40,6 +40,11 @@ class MailgunMCPServer(BaseOneiricServerMixin):
         self.snapshot_manager = self.runtime.snapshot_manager
         self.cache_manager = self.runtime.cache_manager
         self.health_monitor = self.runtime.health_monitor
+
+    @property
+    def _cfg(self) -> MailgunConfig:
+        """Helper to access config with correct type."""
+        return cast(MailgunConfig, self.config)
 
     async def startup(self) -> None:
         """Server startup lifecycle hook."""
@@ -60,7 +65,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
         )
 
         print("✅ Mailgun MCP Server started successfully")
-        print(f"   Listening on {self.config.http_host}:{self.config.http_port}")
+        print(f"   Listening on {self._cfg.http_host}:{self._cfg.http_port}")
         print(f"   Cache directory: {self.runtime.cache_dir}")
 
     async def shutdown(self) -> None:
@@ -79,11 +84,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
         base_components = await self._build_health_components()
 
         # Add mailgun-specific health checks
-        api_key_available = (
-            bool(self.config.mailgun_api_key)
-            if hasattr(self.config, "mailgun_api_key")
-            else False
-        )
+        api_key_available = bool(getattr(self._cfg, "mailgun_api_key", None))
 
         base_components.append(
             self.runtime.health_monitor.create_component_health(

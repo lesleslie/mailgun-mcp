@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Test script for Mailgun MCP CLI commands."""
 
-import sys
 import asyncio
+import sys
+
 sys.path.insert(0, "/Users/les/Projects/oneiric")
 
-from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
 from oneiric.core.cli import MCPServerCLIFactory
+
+from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
+
 
 def test_cli_commands():
     """Test individual CLI commands."""
@@ -62,7 +65,7 @@ def test_cli_commands():
         # Run startup in a short timeout to avoid hanging
         asyncio.run(asyncio.wait_for(server.startup(), timeout=5.0))
         print("✅ Startup lifecycle test passed")
-    except asyncio.TimeoutError:
+    except TimeoutError:
         print("⚠️  Startup lifecycle test timed out (expected for API key validation)")
     except Exception as e:
         print(f"❌ Startup lifecycle test failed: {e}")

@@ -13,11 +13,15 @@ def test_oneiric_imports():
     # Core CLI imports
     from oneiric.core.cli import MCPServerCLIFactory
     from oneiric.core.config import OneiricMCPConfig
+    from oneiric.runtime.cache import RuntimeCacheManager
+    from oneiric.runtime.mcp_health import (
+        HealthCheckResponse,
+        HealthMonitor,
+        HealthStatus,
+    )
 
     # Runtime imports
     from oneiric.runtime.snapshot import RuntimeSnapshotManager
-    from oneiric.runtime.cache import RuntimeCacheManager
-    from oneiric.runtime.mcp_health import HealthCheckResponse, HealthStatus, HealthMonitor
 
     # Verify classes exist
     assert MCPServerCLIFactory is not None
@@ -99,6 +103,7 @@ def test_cache_directory_configuration():
 def test_cli_factory_creation():
     """Test that MCPServerCLIFactory can be created for Mailgun."""
     from oneiric.core.cli import MCPServerCLIFactory
+
     from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
 
     # Create CLI factory

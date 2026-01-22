@@ -2,9 +2,11 @@
 """Test script for Mailgun MCP CLI."""
 
 import sys
+
 sys.path.insert(0, "/Users/les/Projects/oneiric")
 
-from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer, main
+from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
+
 
 def test_config():
     """Test configuration loading."""
@@ -31,7 +33,7 @@ def test_cli_factory():
     print("\nTesting CLI factory...")
     from oneiric.core.cli import MCPServerCLIFactory
 
-    config = MailgunConfig()
+    MailgunConfig()
     cli_factory = MCPServerCLIFactory(
         server_class=MailgunMCPServer,
         config_class=MailgunConfig,

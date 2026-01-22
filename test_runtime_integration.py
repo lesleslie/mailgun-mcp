@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Test script for Mailgun MCP Runtime Integration."""
 
-import sys
 import asyncio
-import time
-import tempfile
 import shutil
+import sys
+import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, "/Users/les/Projects/oneiric")
 
-from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
 from oneiric.runtime.mcp_health import HealthStatus
+
+from mailgun_mcp.__main__ import MailgunConfig, MailgunMCPServer
+
 
 def test_runtime_integration():
     """Test complete runtime integration."""
@@ -109,13 +111,13 @@ def test_runtime_integration():
         print("\n🎉 All runtime integration tests passed!")
 
         # Print summary
-        print(f"\n📊 Test Summary:")
-        print(f"   ✅ Configuration: Working")
-        print(f"   ✅ Runtime Components: Initialized")
+        print("\n📊 Test Summary:")
+        print("   ✅ Configuration: Working")
+        print("   ✅ Runtime Components: Initialized")
         print(f"   ✅ Snapshot Management: {len(history)} snapshots")
-        print(f"   ✅ Cache Management: Functional")
+        print("   ✅ Cache Management: Functional")
         print(f"   ✅ Health Monitoring: {health_response.status.value}")
-        print(f"   ✅ Lifecycle Hooks: Operational")
+        print("   ✅ Lifecycle Hooks: Operational")
 
         return True
 
