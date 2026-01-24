@@ -1,3 +1,0 @@
-fastmcp
-mcp-common>=0.4.8
-oneiric>=0.2.0

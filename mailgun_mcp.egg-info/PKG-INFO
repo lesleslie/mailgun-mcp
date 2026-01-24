@@ -1,9 +1,0 @@
-Metadata-Version: 2.4
-Name: mailgun-mcp
-Version: 0.2.3
-Summary: Unofficial MCP server for the Mailgun API
-Author-email: Les Leslie <les@wedgwoodwebworks.com>
-Requires-Python: >=3.13
-Requires-Dist: fastmcp
-Requires-Dist: mcp-common>=0.4.8
-Requires-Dist: oneiric>=0.2.0
