@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+For a shorter, tool-neutral bootstrap document, start with `AGENTS.md`.
+
 ## Project Overview
 
 This is a comprehensive Mailgun MCP (Model Context Protocol) server built with FastMCP and FastAPI. It exposes 30+ MCP tools covering the full Mailgun API, including email sending, domain management, event tracking, statistics, suppression lists, routes, templates, and webhooks.

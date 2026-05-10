@@ -1,0 +1,25 @@
+{
+  "server_name": "mailgun-mcp",
+  "timestamp": "2026-04-17T17-06-13",
+  "version": "1.0",
+  "components": {
+    "server": {
+      "status": "started",
+      "timestamp": "2026-04-17T17:06:13Z",
+      "config": {
+        "http_port": 3039,
+        "http_host": "127.0.0.1",
+        "debug": false,
+        "enable_http_transport": true
+      }
+    },
+    "api_key": {
+      "status": "validated",
+      "timestamp": "2026-04-17T17:06:13Z"
+    }
+  },
+  "metadata": {
+    "system_time": 1776470773.245595,
+    "python_version": "3.13"
+  }
+}

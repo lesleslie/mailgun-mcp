@@ -1,6 +1,6 @@
 [project]
 name = "mailgun-mcp"
-version = "0.2.5"
+version = "0.2.7"
 description = "Unofficial MCP server for the Mailgun API"
 authors = [
     { name = "Les Leslie", email = "les@wedgwoodwebworks.com" },
@@ -15,7 +15,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "crackerjack>=0.39.1",
-    "excalidraw-mcp>=0.34.0",
     "session-buddy>=0.4.0",
 ]
 

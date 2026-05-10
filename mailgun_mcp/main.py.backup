@@ -226,7 +226,7 @@ MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024  # 25MB (Mailgun limit)
     description="Send an email message via Mailgun API",
     output_schema=None,  # Disable automatic serialization so we can return raw values
 )
-async def send_message(  # noqa: C901
+async def send_message(
     from_email: str,
     to: str,
     subject: str,

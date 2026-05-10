@@ -1,4 +1,5 @@
 """Tests for uncovered functions and edge cases in Mailgun MCP"""
+
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -110,7 +111,9 @@ async def test_http_request_post():
         mock_response = AsyncMock()
         mock_instance.post.return_value = mock_response
 
-        result = await _http_request("POST", "https://example.com", data={"key": "value"})
+        result = await _http_request(
+            "POST", "https://example.com", data={"key": "value"}
+        )
 
         mock_instance.post.assert_called_once()
         assert result == mock_response
@@ -126,7 +129,9 @@ async def test_http_request_put():
         mock_response = AsyncMock()
         mock_instance.put.return_value = mock_response
 
-        result = await _http_request("PUT", "https://example.com", data={"key": "value"})
+        result = await _http_request(
+            "PUT", "https://example.com", data={"key": "value"}
+        )
 
         mock_instance.put.assert_called_once()
         assert result == mock_response
@@ -158,7 +163,9 @@ async def test_http_request_other_method():
         mock_response = AsyncMock()
         mock_instance.request.return_value = mock_response
 
-        result = await _http_request("PATCH", "https://example.com", data={"key": "value"})
+        result = await _http_request(
+            "PATCH", "https://example.com", data={"key": "value"}
+        )
 
         mock_instance.request.assert_called_once()
         assert result == mock_response

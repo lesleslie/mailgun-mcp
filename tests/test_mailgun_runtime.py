@@ -82,8 +82,8 @@ async def test_mailgun_health_check():
 
     # Verify response structure
     assert health_response is not None
-    assert hasattr(health_response, 'status')
-    assert hasattr(health_response, 'components')
+    assert hasattr(health_response, "status")
+    assert hasattr(health_response, "components")
     assert len(health_response.components) > 0
 
 
@@ -113,7 +113,7 @@ def test_cli_factory_creation():
         name="mailgun-mcp",
         use_subcommands=True,
         legacy_flags=False,
-        description="Mailgun MCP Server - Email management via Mailgun API"
+        description="Mailgun MCP Server - Email management via Mailgun API",
     )
 
     # Verify factory configuration
@@ -130,7 +130,7 @@ def test_environment_prefix():
     from mailgun_mcp.__main__ import MailgunConfig
 
     # Check Config class attributes
-    assert hasattr(MailgunConfig.Config, 'env_prefix')
+    assert hasattr(MailgunConfig.Config, "env_prefix")
     assert MailgunConfig.Config.env_prefix == "MAILGUN_MCP_"
 
 

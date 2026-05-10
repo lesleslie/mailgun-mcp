@@ -1,4 +1,5 @@
 """Additional tests to cover remaining gaps in Mailgun MCP"""
+
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -198,7 +199,9 @@ async def test_delete_domain_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"domain": {"name": "deleted.com", "state": "deleted"}}
+    mock_response.json.return_value = {
+        "domain": {"name": "deleted.com", "state": "deleted"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -221,7 +224,9 @@ async def test_verify_domain_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"domain": {"name": "verified.com", "state": "active"}}
+    mock_response.json.return_value = {
+        "domain": {"name": "verified.com", "state": "active"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -313,7 +318,9 @@ async def test_get_bounces_with_parameters(monkeypatch):
         instance = MockAsyncClient.return_value.__aenter__.return_value
         instance.get.return_value = mock_response
 
-        result = await get_bounces.run({"domain_name": "example.com", "limit": 50, "skip": 5})
+        result = await get_bounces.run(
+            {"domain_name": "example.com", "limit": 50, "skip": 5}
+        )
 
         if hasattr(result, "structured_content"):
             result = result.structured_content
@@ -329,7 +336,11 @@ async def test_add_bounce_with_all_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"address": "bounce@example.com", "code": 550, "error": "Mailbox unavailable"}
+    mock_response.json.return_value = {
+        "address": "bounce@example.com",
+        "code": 550,
+        "error": "Mailbox unavailable",
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -389,7 +400,9 @@ async def test_get_complaints_with_parameters(monkeypatch):
         instance = MockAsyncClient.return_value.__aenter__.return_value
         instance.get.return_value = mock_response
 
-        result = await get_complaints.run({"domain_name": "example.com", "limit": 25, "skip": 10})
+        result = await get_complaints.run(
+            {"domain_name": "example.com", "limit": 25, "skip": 10}
+        )
 
         if hasattr(result, "structured_content"):
             result = result.structured_content
@@ -405,7 +418,10 @@ async def test_add_complaint_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"address": "complainer@example.com", "created_at": "2023-01-01T00:00:00Z"}
+    mock_response.json.return_value = {
+        "address": "complainer@example.com",
+        "created_at": "2023-01-01T00:00:00Z",
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -430,7 +446,10 @@ async def test_delete_complaint_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"address": "complainer@example.com", "deleted": True}
+    mock_response.json.return_value = {
+        "address": "complainer@example.com",
+        "deleted": True,
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -454,13 +473,17 @@ async def test_get_unsubscribes_with_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"items": [{"address": "unsubscribed@example.com"}]}
+    mock_response.json.return_value = {
+        "items": [{"address": "unsubscribed@example.com"}]
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
         instance.get.return_value = mock_response
 
-        result = await get_unsubscribes.run({"domain_name": "example.com", "limit": 75, "skip": 20})
+        result = await get_unsubscribes.run(
+            {"domain_name": "example.com", "limit": 75, "skip": 20}
+        )
 
         if hasattr(result, "structured_content"):
             result = result.structured_content
@@ -476,14 +499,21 @@ async def test_add_unsubscribe_with_all_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"address": "unsubscribed@example.com", "tag": "newsletter"}
+    mock_response.json.return_value = {
+        "address": "unsubscribed@example.com",
+        "tag": "newsletter",
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
         instance.post.return_value = mock_response
 
         result = await add_unsubscribe.run(
-            {"domain_name": "example.com", "address": "unsubscribed@example.com", "tag": "newsletter"}
+            {
+                "domain_name": "example.com",
+                "address": "unsubscribed@example.com",
+                "tag": "newsletter",
+            }
         )
 
         if hasattr(result, "structured_content"):
@@ -501,14 +531,21 @@ async def test_delete_unsubscribe_with_all_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"address": "unsubscribed@example.com", "deleted": True}
+    mock_response.json.return_value = {
+        "address": "unsubscribed@example.com",
+        "deleted": True,
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
         instance.delete.return_value = mock_response
 
         result = await delete_unsubscribe.run(
-            {"domain_name": "example.com", "address": "unsubscribed@example.com", "tag": "promotions"}
+            {
+                "domain_name": "example.com",
+                "address": "unsubscribed@example.com",
+                "tag": "promotions",
+            }
         )
 
         if hasattr(result, "structured_content"):
@@ -525,7 +562,9 @@ async def test_get_routes_with_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"routes": [{"id": "route1", "expression": "match_recipient"}]}
+    mock_response.json.return_value = {
+        "routes": [{"id": "route1", "expression": "match_recipient"}]
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -674,7 +713,9 @@ async def test_get_template_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"template": {"name": "template1", "version": "v1"}}
+    mock_response.json.return_value = {
+        "template": {"name": "template1", "version": "v1"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -697,7 +738,9 @@ async def test_create_template_with_all_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"template": {"name": "new-template", "version": "v1"}}
+    mock_response.json.return_value = {
+        "template": {"name": "new-template", "version": "v1"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -727,7 +770,9 @@ async def test_update_template_with_all_parameters(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"template": {"name": "template1", "version": "v2"}}
+    mock_response.json.return_value = {
+        "template": {"name": "template1", "version": "v2"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -759,7 +804,9 @@ async def test_delete_template_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"template": {"name": "template1", "deleted": True}}
+    mock_response.json.return_value = {
+        "template": {"name": "template1", "deleted": True}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -782,7 +829,9 @@ async def test_get_webhooks_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"webhooks": {"click": {"url": "https://example.com/click"}}}
+    mock_response.json.return_value = {
+        "webhooks": {"click": {"url": "https://example.com/click"}}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
@@ -826,7 +875,9 @@ async def test_create_webhook_with_mock_response(monkeypatch):
 
     mock_response = AsyncMock()
     mock_response.is_success = True
-    mock_response.json.return_value = {"webhook": {"url": "https://example.com/new-webhook"}}
+    mock_response.json.return_value = {
+        "webhook": {"url": "https://example.com/new-webhook"}
+    }
 
     with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
         instance = MockAsyncClient.return_value.__aenter__.return_value
