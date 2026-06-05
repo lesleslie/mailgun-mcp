@@ -39,3 +39,12 @@ __pycache__/
 crackerjack-ai-debug-*.log
 crackerjack-debug-*.log
 htmlcov/
+
+# Backup Files (added by gitignore audit)
+# ============================================================================
+*.backup
+*.bak
+/.backups/
+/.backup/
+.backups/
+.backup/
