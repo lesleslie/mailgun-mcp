@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 import base64
 import os
 import sys
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -221,12 +224,64 @@ async def _http_request(method: str, url: str, **kwargs: Any) -> httpx.Response:
 MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024  # 25MB (Mailgun limit)
 
 
+def _scan_attachment(attachment: str) -> dict[str, Any] | None:
+    """Optional ClamAV malware scan. Returns error dict on detection, None otherwise."""
+    try:
+        import clamd  # type: ignore[import-not-found]
+
+        clam = clamd.ClamdUnixSocket()
+        with open(attachment, "rb") as f:
+            scan_result = clam.scan_stream(f.read())
+
+        status, details = scan_result.get(attachment, ("UNKNOWN", None))
+        if status == "VIRUS_FOUND":
+            return {
+                "error": {
+                    "type": "security_error",
+                    "message": f"Malware detected in attachment: {details}",
+                }
+            }
+        if status == "ERROR":
+            print(
+                f"Warning: Malware scan failed for {attachment}: {details}",
+                file=sys.stderr,
+            )
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"Warning: Malware scan error for {attachment}: {e}", file=sys.stderr)
+    return None
+
+
+def _validate_attachment(attachment: str) -> dict[str, Any] | None:
+    """Validate attachment path, size, and run optional malware scan.
+
+    Returns an error dict if validation fails, None if the attachment is clean.
+    """
+    if not Path(attachment).exists():
+        return {
+            "error": {
+                "type": "validation_error",
+                "message": f"Attachment file not found: {attachment}",
+            }
+        }
+    file_size = Path(attachment).stat().st_size
+    if file_size > MAX_ATTACHMENT_SIZE:
+        return {
+            "error": {
+                "type": "validation_error",
+                "message": f"Attachment too large: {file_size:,} bytes (max: {MAX_ATTACHMENT_SIZE:,} bytes)",
+            }
+        }
+    return _scan_attachment(attachment)
+
+
 @mcp.tool(
     name="send_message",
     description="Send an email message via Mailgun API",
     output_schema=None,  # Disable automatic serialization so we can return raw values
 )
-async def send_message(  # noqa: C901
+async def send_message(
     from_email: str,
     to: str,
     subject: str,
@@ -247,62 +302,10 @@ async def send_message(  # noqa: C901
             }
         }
 
-    # Validate attachment if provided
     if attachment is not None:
-        # Check if file exists
-        if not os.path.exists(attachment):
-            return {
-                "error": {
-                    "type": "validation_error",
-                    "message": f"Attachment file not found: {attachment}",
-                }
-            }
-
-        # Validate file size
-        file_size = os.path.getsize(attachment)
-        if file_size > MAX_ATTACHMENT_SIZE:
-            return {
-                "error": {
-                    "type": "validation_error",
-                    "message": f"Attachment too large: {file_size:,} bytes (max: {MAX_ATTACHMENT_SIZE:,} bytes)",
-                }
-            }
-
-        # Optional malware scanning with clamd (graceful fallback if unavailable)
-        try:
-            import clamd
-
-            clam = clamd.ClamdUnixSocket()
-            with open(attachment, "rb") as f:
-                scan_result = clam.scan_stream(f.read())
-
-            # Check scan result
-            # scan_result returns {filename: ('OK', None)} or {filename: ('VIRUS_FOUND', 'virus_name')}
-            status, details = scan_result.get(attachment, ("UNKNOWN", None))
-
-            if status == "VIRUS_FOUND":
-                return {
-                    "error": {
-                        "type": "security_error",
-                        "message": f"Malware detected in attachment: {details}",
-                    }
-                }
-            elif status == "ERROR":
-                # Log error but don't fail the request (scanning is optional)
-                import sys
-
-                print(
-                    f"Warning: Malware scan failed for {attachment}: {details}",
-                    file=sys.stderr,
-                )
-        except ImportError:
-            # clamd not available, skip scanning (expected in many environments)
-            pass
-        except Exception as e:
-            # Log error but don't fail the request (scanning is optional)
-            import sys
-
-            print(f"Warning: Malware scan error for {attachment}: {e}", file=sys.stderr)
+        error = _validate_attachment(attachment)
+        if error is not None:
+            return error
 
     # Prepare email data
     email_data = {

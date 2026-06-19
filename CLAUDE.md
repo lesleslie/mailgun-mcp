@@ -117,7 +117,7 @@ Tools are organized by Mailgun API functionality:
 - **Email Management** (mailgun_mcp/main.py:18-84): `send_message` with support for attachments, tags, scheduling
 - **Domain Management** (mailgun_mcp/main.py:87-280): Create, list, get, delete, verify domains
 
-![Domain Lifecycle](https://mermaid.ink/img/pako:eNp1kUFLxDAQhe_-ijm6Qi8e97AgLXtTRFEEEQnJtA2bTZYkW9h_b_LSVrraHsr0vW_eJNMQReRGi86LYzXc31B6Pu--qKp2VHsWUdtuSzJX_K3cUWh7uwE1uUCf2apUv7PXrZZJd3ZLDfCxWaHpHw79EC6YNaBczpptwA8y6oFT_tNrofWYvsT2QhtWBZM9ywO1UICWDHBvJzVe85yrq2tO7mJy3QvbcaAghr95DRsueSpXV3mTCzRtGmI5KqQXjn59EZO7tnRAeFkXmbzu-kiuHY8HA_POxlzIndijS5jZqYWlkHKJ01QToOfPHLcWvv9dKyKw67x1z9J5FWan_B96_Fg4U_wPprDI0w)
+!Domain Lifecycle
 
 ```mermaid
 stateDiagram-v2

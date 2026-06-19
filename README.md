@@ -23,7 +23,7 @@ The server provides access to the full Mailgun API including:
 
 ### Architecture Overview
 
-![Mailgun MCP Architecture](https://mermaid.ink/img/pako:eNqNkW9LwzAQh9_7KQK-ddSJ4hQRXNv9AQVxA18EkTS9dmFpUnLpZN_etFdxosP2RQq55-EuvyudqDdsnZyw8D3wmUD_FD-zFbgduLvMRfeVULpszKiS9Rsbje7ZlKftHXsSRpRQgfFvZHfVmCc2lM2RcsLTXbhiayfkVpnysJbylRdeoVcSD-9nfNXUtQNEZQ17DMCP8py_2MbDkYYLvoaq1uIosOSvkG2s3f6qd8eU3jzmCCZ_r8IQgemCEd4LuWlxjLwoMUK5gbzRQHZMcYx5Cf497zLBzpMOwjRRyFcV-ygHDb5XEoqIFGhzIsPWYDCSWskttoJqXehDSCk7kjAESE4F3oUco_Amvf9OdEaJjnlmGyOhn8i2Camvdo3BJkPpVPbVY05Bdz2ifv6mzsOvE-gNzLVr6I0Fhf-P4fvV9NKSFvJDIrKTPmhPeLAd9HsNYZGF0vr29PLh5jy9OJNWW3d7WhTFATPtmavzeHI9-ZuJBzDJACYdwMwGMPMBzGIAszzGfAKa9DoE)
+!Mailgun MCP Architecture
 
 ```mermaid
 graph TD
@@ -76,7 +76,7 @@ graph TD
    Use the Mailgun API to send an email via an HTTP POST request with proper authentication.
    For detailed instructions, see the Mailgun API documentation.
 
-   ![Email Sending Flow](https://mermaid.ink/img/pako:eNqNkU1LwzAQh9_7KQK-ddSJ4hQRXNv9AQVxA18EkTT9dmFpUnLpZN-etFdxosP2RQq55-EuvyudqDdsnZyw8D3wmUD_FD-zFbgduLvMRfeVULpszKiS9Rsbje7ZlKftHXsSRpRQgfFvZHfVmCc2lM2RcsLTXbhiayfkVpnysJbylRdeoVcSD-9nfNXUtQNEZQ17DMCP8py_2MbDkYYLvoaq1uIosOSvkG2s3f6qd8eU3jzmCCZ_r8IQgemCEd4LuWlxjLwoMUK5gbzRQHZMcYx5Cf497zLBzpMOwjRRyFcV-ygHDb5XEoqIFGhzIsPWYDCSWskttoJqXehDSCk7kjAESE4F3oUco_Amvf9OdEaJjnlmGyOhn8i2Camvdo3BJkPpVPbVY05Bdz2ifv6mzsOvE-gNzLVr6I0Fhf-P4fvV9NKSFvJDIrKTPmhPeLAd9HsNYZGF0vr29PLh5jy9OJNWW3d7WhTFATPtmavzeHI9-ZuJBzDJACYdwMwGMPMBzGIAszzGfAKa9DoE)
+   !Email Sending Flow
 
    ```mermaid
    flowchart TD
