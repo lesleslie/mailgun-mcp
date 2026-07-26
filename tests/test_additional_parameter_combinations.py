@@ -44,6 +44,9 @@ async def test_send_message_with_all_optional_fields(monkeypatch):
     """Test send_message with all optional fields to cover more code paths"""
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: "test-key")
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_domain", lambda: "example.com")
+    # Bypass on-disk attachment validation — the test only exercises payload
+    # forwarding and the path "path/to/file.txt" is intentionally fake.
+    monkeypatch.setattr("mailgun_mcp.main._validate_attachment", lambda _: None)
 
     mock_response = AsyncMock()
     mock_response.is_success = True
@@ -82,6 +85,9 @@ async def test_send_message_with_attachment(monkeypatch):
     """Test send_message with attachment parameter specifically"""
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: "test-key")
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_domain", lambda: "example.com")
+    # Bypass on-disk attachment validation — the test only exercises payload
+    # forwarding and the path "test_attachment.txt" is intentionally fake.
+    monkeypatch.setattr("mailgun_mcp.main._validate_attachment", lambda _: None)
 
     mock_response = AsyncMock()
     mock_response.is_success = True

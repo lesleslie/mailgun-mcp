@@ -105,6 +105,18 @@ class TestAttachmentValidation:
         """Test handling of empty attachment path."""
         monkeypatch.setenv("MAILGUN_API_KEY", "test-key")
         monkeypatch.setenv("MAILGUN_DOMAIN", "example.com")
+        # Force the not-found validation error: Path("").exists() returns True
+        # on POSIX (treated as current dir), so without this stub the call
+        # would proceed past validation and return the mocked Mailgun payload.
+        monkeypatch.setattr(
+            "mailgun_mcp.main._validate_attachment",
+            lambda path: {
+                "error": {
+                    "type": "validation_error",
+                    "message": f"Attachment file not found: {path}",
+                }
+            },
+        )
 
         with patch("mailgun_mcp.main.httpx.AsyncClient"):
             result = await send_message(
