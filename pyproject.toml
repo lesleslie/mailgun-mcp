@@ -9,7 +9,7 @@ requires-python = ">=3.13"
 dependencies = [
     "fastmcp",
     "mcp-common>=0.17.0",
-    "oneiric>=0.2.0",
+    "oneiric>=0.16.0",
 ]
 
 [tool.uv.sources]
