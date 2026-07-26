@@ -12,6 +12,8 @@ from httpx import BasicAuth as HTTPXBasicAuth
 
 from mcp_common.health import register_http_health_route
 
+from mailgun_mcp import __version__
+
 
 class BasicAuth:
     """Custom BasicAuth that supports comparison with tuples for test compatibility."""
@@ -61,7 +63,7 @@ mcp = FastMCP(
 )
 
 
-register_http_health_route(mcp, service_name="mailgun", version="1.0.0")
+register_http_health_route(mcp, service_name="mailgun", version=__version__)
 
 
 @mcp.custom_route("/healthz", methods=["GET"])
