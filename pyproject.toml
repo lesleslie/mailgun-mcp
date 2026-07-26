@@ -55,6 +55,7 @@ fixable = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 timeout = 300
+testpaths = ["tests"]
 addopts = "--cov=mailgun_mcp --cov-report=term"
 markers = [
     "unit: marks test as a unit test",

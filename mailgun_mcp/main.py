@@ -9,7 +9,6 @@ from typing import Any
 import httpx
 from fastmcp import FastMCP
 from httpx import BasicAuth as HTTPXBasicAuth
-
 from mcp_common.health import register_http_health_route
 
 from mailgun_mcp import __version__
@@ -274,6 +273,39 @@ def _validate_attachment(attachment: str) -> dict[str, Any] | None:
     return _scan_attachment(attachment)
 
 
+def _build_email_data(
+    *,
+    from_email: str,
+    to: str,
+    subject: str,
+    text: str,
+    cc: str | None,
+    bcc: str | None,
+    html: str | None,
+    attachment: str | None,
+    tag: str | None,
+    schedule_at: str | None,
+) -> dict[str, Any]:
+    """Assemble the Mailgun form-data payload, omitting unset optional fields."""
+    email_data: dict[str, Any] = {
+        "from": from_email,
+        "to": to,
+        "subject": subject,
+        "text": text,
+    }
+    for key, value in (
+        ("cc", cc),
+        ("bcc", bcc),
+        ("html", html),
+        ("attachment", attachment),
+        ("o:tag", tag),
+        ("o:schedule", schedule_at),
+    ):
+        if value is not None:
+            email_data[key] = value
+    return email_data
+
+
 @mcp.tool(
     name="send_message",
     description="Send an email message via Mailgun API",
@@ -305,27 +337,18 @@ async def send_message(
         if error is not None:
             return error
 
-    # Prepare email data
-    email_data = {
-        "from": from_email,
-        "to": to,
-        "subject": subject,
-        "text": text,
-    }
-
-    # Add optional fields if present
-    if cc is not None:
-        email_data["cc"] = cc
-    if bcc is not None:
-        email_data["bcc"] = bcc
-    if html is not None:
-        email_data["html"] = html
-    if attachment is not None:
-        email_data["attachment"] = attachment
-    if tag is not None:
-        email_data["o:tag"] = tag
-    if schedule_at is not None:
-        email_data["o:schedule"] = schedule_at
+    email_data = _build_email_data(
+        from_email=from_email,
+        to=to,
+        subject=subject,
+        text=text,
+        cc=cc,
+        bcc=bcc,
+        html=html,
+        attachment=attachment,
+        tag=tag,
+        schedule_at=schedule_at,
+    )
 
     # Forward request to Mailgun (using connection pooling for 11x performance)
     response = await _http_request(
