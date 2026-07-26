@@ -171,7 +171,7 @@ def _normalize_auth_for_provider(kwargs: dict[str, Any]) -> dict[str, Any]:
             # Put the auth back and return as-is for test compatibility
             kwargs["auth"] = auth_obj
             return kwargs
-    elif isinstance(auth_obj, BasicAuth):  # type: ignore[arg-type]
+    elif isinstance(auth_obj, BasicAuth):
         # httpx.BasicAuth stores .username and .password attributes
         username = getattr(auth_obj, "username", None)
         password = getattr(auth_obj, "password", None)
@@ -224,7 +224,7 @@ MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024  # 25MB (Mailgun limit)
 def _scan_attachment(attachment: str) -> dict[str, Any] | None:
     """Optional ClamAV malware scan. Returns error dict on detection, None otherwise."""
     try:
-        import clamd  # type: ignore[import-not-found]
+        import clamd
 
         clam = clamd.ClamdUnixSocket()
         with open(attachment, "rb") as f:
@@ -362,7 +362,7 @@ async def send_message(
     if getattr(response, "is_success", False) or (
         200 <= getattr(response, "status_code", 0) < 300
     ):
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -392,12 +392,12 @@ async def get_domains(limit: int | None = 100, skip: int | None = 0) -> dict[str
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/domains",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -425,11 +425,11 @@ async def get_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/domains/{domain_name}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -478,12 +478,12 @@ async def create_domain(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/domains",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=domain_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -509,11 +509,11 @@ async def delete_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/domains/{domain_name}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -541,11 +541,11 @@ async def verify_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/domains/{domain_name}/verify",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -592,12 +592,12 @@ async def get_events(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/events",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -641,12 +641,12 @@ async def get_stats(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/stats",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -676,12 +676,12 @@ async def get_bounces(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/bounces",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -720,12 +720,12 @@ async def add_bounce(
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/bounces",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=bounce_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -753,11 +753,11 @@ async def delete_bounce(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/bounces/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -789,12 +789,12 @@ async def get_complaints(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/complaints",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -826,12 +826,12 @@ async def add_complaint(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/complaints",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=complaint_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -859,11 +859,11 @@ async def delete_complaint(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/complaints/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -895,12 +895,12 @@ async def get_unsubscribes(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -932,12 +932,12 @@ async def add_unsubscribe(
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=unsubscribe_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -969,12 +969,12 @@ async def delete_unsubscribe(
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1000,12 +1000,12 @@ async def get_routes(limit: int | None = 100, skip: int | None = 0) -> dict[str,
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/routes",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1033,11 +1033,11 @@ async def get_route(route_id: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1063,9 +1063,9 @@ async def create_route(
         }
 
     route_data = {
-        "priority": str(priority),  # type: ignore
+        "priority": str(priority),
         "expression": expression,
-        "action": action,  # type: ignore
+        "action": action,
     }
 
     if description is not None:
@@ -1074,12 +1074,12 @@ async def create_route(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/routes",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=route_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1113,23 +1113,23 @@ async def update_route(
     route_data = {}
 
     if priority is not None:
-        route_data["priority"] = priority  # type: ignore
+        route_data["priority"] = priority
     if expression is not None:
-        route_data["expression"] = expression  # type: ignore
+        route_data["expression"] = expression
     if action is not None:
-        route_data["action"] = action  # type: ignore
+        route_data["action"] = action
     if description is not None:
-        route_data["description"] = description  # type: ignore
+        route_data["description"] = description
 
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=route_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1155,11 +1155,11 @@ async def delete_route(route_id: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1191,12 +1191,12 @@ async def get_templates(
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/templates",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         params=params,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1224,11 +1224,11 @@ async def get_template(template_name: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1273,12 +1273,12 @@ async def create_template(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/templates",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=template_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1329,12 +1329,12 @@ async def update_template(
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=template_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1362,11 +1362,11 @@ async def delete_template(template_name: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1392,11 +1392,11 @@ async def get_webhooks() -> dict[str, Any]:
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/domains/webhooks",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1424,11 +1424,11 @@ async def get_webhook(webhook_type: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1458,12 +1458,12 @@ async def create_webhook(webhook_type: str, url: str) -> dict[str, Any]:
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
         data=webhook_data,
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
@@ -1491,11 +1491,11 @@ async def delete_webhook(webhook_type: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key()),  # type: ignore
+        auth=BasicAuth("api", get_mailgun_api_key()),
     )
 
     if response.is_success:
-        return await response.json()  # type: ignore
+        return await response.json()
     return {
         "error": {
             "type": "mailgun_error",
