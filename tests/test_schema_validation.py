@@ -42,7 +42,7 @@ class TestPydanticModelsAvailability:
         """
         # Attempt to import models - they should not exist yet
         try:
-            from mailgun_mcp.models import (  # type: ignore[import-not-found]
+            from mailgun_mcp.models import (  # ty: ignore[unresolved-import]
                 Domain,
                 Event,
                 Message,

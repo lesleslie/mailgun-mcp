@@ -6,7 +6,7 @@ from typing import Any, cast
 from mcp_common.cli import MCPServerCLIFactory
 from mcp_common.server import BaseOneiricServerMixin, create_runtime_components
 from oneiric.core.config import OneiricMCPConfig
-from oneiric.runtime.mcp_health import HealthStatus
+from oneiric.runtime.mcp_health import HealthCheckResponse, HealthStatus
 
 # Import the main server from the existing codebase
 from mailgun_mcp.main import mcp, validate_api_key_at_startup
@@ -28,7 +28,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
     """Mailgun MCP Server with Oneiric integration."""
 
     def __init__(self, config: MailgunConfig):
-        self.config = config  # type: ignore[assignment]
+        self.config = config  # ty: ignore[invalid-assignment]
         self.mcp = mcp  # Use the existing FastMCP instance
 
         # Initialize runtime components using mcp-common helper
@@ -78,7 +78,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
 
         print("👋 Mailgun MCP Server shutdown complete")
 
-    async def health_check(self) -> dict[str, Any]:
+    async def health_check(self) -> HealthCheckResponse:
         """Perform health check."""
         # Build base health components using mixin helper
         base_components = await self._build_health_components()
@@ -97,7 +97,7 @@ class MailgunMCPServer(BaseOneiricServerMixin):
         )
 
         # Create health response
-        return self.runtime.health_monitor.create_health_response(base_components)  # type: ignore
+        return self.runtime.health_monitor.create_health_response(base_components)
 
     def get_app(self) -> Any:  # Return type depends on mcp.http_app
         """Get the ASGI application."""
