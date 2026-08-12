@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-08-12
+
+### Changed
+
+- Mailgun-mcp (quality: 56/100) - 2026-06-19 08:10:00
+
+### Fixed
+
+- Add ty: ignore for BasicAuth arg type (or "" doesn't narrow to str)
+- Address test failure and C901 complexity
+- Drop unused # type: ignore directives
+
+### Internal
+
+- Adopt register_http_health_route from mcp-common
+- Bump oneiric dep to >=0.16.0
+- Fix pre-existing test failures surfaced by FastMCP 3.x bump
+- mailgun-mcp: Migrate # type: ignore stragglers to ty syntax or fix
+- Use __version__ instead of hardcoded version literal
+
 ## [0.2.8] - 2026-06-19
 
 ### Internal

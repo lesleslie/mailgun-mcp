@@ -224,7 +224,7 @@ MAX_ATTACHMENT_SIZE = 25 * 1024 * 1024  # 25MB (Mailgun limit)
 def _scan_attachment(attachment: str) -> dict[str, Any] | None:
     """Optional ClamAV malware scan. Returns error dict on detection, None otherwise."""
     try:
-        import clamd
+        import clamd  # ty: ignore[unresolved-import]
 
         clam = clamd.ClamdUnixSocket()
         with open(attachment, "rb") as f:
@@ -354,7 +354,7 @@ async def send_message(
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{get_mailgun_domain()}/messages",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=email_data,
     )
@@ -393,7 +393,7 @@ async def get_domains(limit: int | None = 100, skip: int | None = 0) -> dict[str
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/domains",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -427,7 +427,7 @@ async def get_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/domains/{domain_name}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -481,7 +481,7 @@ async def create_domain(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/domains",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=domain_data,
     )
@@ -513,7 +513,7 @@ async def delete_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/domains/{domain_name}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -546,7 +546,7 @@ async def verify_domain(domain_name: str) -> dict[str, Any]:
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/domains/{domain_name}/verify",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -598,7 +598,7 @@ async def get_events(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/events",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -648,7 +648,7 @@ async def get_stats(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/stats",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -684,7 +684,7 @@ async def get_bounces(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/bounces",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -729,7 +729,7 @@ async def add_bounce(
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/bounces",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=bounce_data,
     )
@@ -763,7 +763,7 @@ async def delete_bounce(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/bounces/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -800,7 +800,7 @@ async def get_complaints(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/complaints",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -838,7 +838,7 @@ async def add_complaint(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/complaints",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=complaint_data,
     )
@@ -872,7 +872,7 @@ async def delete_complaint(domain_name: str, address: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/complaints/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -909,7 +909,7 @@ async def get_unsubscribes(
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -947,7 +947,7 @@ async def add_unsubscribe(
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=unsubscribe_data,
     )
@@ -985,7 +985,7 @@ async def delete_unsubscribe(
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/{domain_name}/unsubscribes/{address}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -1017,7 +1017,7 @@ async def get_routes(limit: int | None = 100, skip: int | None = 0) -> dict[str,
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/routes",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -1051,7 +1051,7 @@ async def get_route(route_id: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1093,7 +1093,7 @@ async def create_route(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/routes",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=route_data,
     )
@@ -1144,7 +1144,7 @@ async def update_route(
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=route_data,
     )
@@ -1176,7 +1176,7 @@ async def delete_route(route_id: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/routes/{route_id}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1213,7 +1213,7 @@ async def get_templates(
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/templates",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         params=params,
     )
@@ -1247,7 +1247,7 @@ async def get_template(template_name: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1297,7 +1297,7 @@ async def create_template(
     response = await _http_request(
         "POST",
         "https://api.mailgun.net/v3/templates",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=template_data,
     )
@@ -1354,7 +1354,7 @@ async def update_template(
     response = await _http_request(
         "PUT",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=template_data,
     )
@@ -1388,7 +1388,7 @@ async def delete_template(template_name: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/templates/{template_name}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1419,7 +1419,7 @@ async def get_webhooks() -> dict[str, Any]:
     response = await _http_request(
         "GET",
         "https://api.mailgun.net/v3/domains/webhooks",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1452,7 +1452,7 @@ async def get_webhook(webhook_type: str) -> dict[str, Any]:
     response = await _http_request(
         "GET",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
@@ -1487,7 +1487,7 @@ async def create_webhook(webhook_type: str, url: str) -> dict[str, Any]:
     response = await _http_request(
         "POST",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
         data=webhook_data,
     )
@@ -1521,7 +1521,7 @@ async def delete_webhook(webhook_type: str) -> dict[str, Any]:
     response = await _http_request(
         "DELETE",
         f"https://api.mailgun.net/v3/domains/webhooks/{webhook_type}",
-        auth=BasicAuth("api", get_mailgun_api_key() or ""  # ty: ignore[invalid-argument-type]
+        auth=BasicAuth("api", get_mailgun_api_key() or ""
     ),
     )
 
