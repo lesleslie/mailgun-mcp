@@ -6,11 +6,11 @@ For a shorter, tool-neutral bootstrap document, start with `AGENTS.md`.
 
 ## Project Overview
 
-This is a comprehensive Mailgun MCP (Model Context Protocol) server built with FastMCP and FastAPI. It exposes 30+ MCP tools covering the full Mailgun API, including email sending, domain management, event tracking, statistics, suppression lists, routes, templates, and webhooks.
+This is a comprehensive Mailgun MCP (Model Context Protocol) server built with FastMCP and FastAPI. It exposes 31 MCP tools covering the full Mailgun API, including email sending, domain management, event tracking, statistics, suppression lists, routes, templates, and webhooks.
 
 ## Project Structure
 
-- `mailgun_mcp/main.py` - Main MCP server with 30+ tools exposed via `@mcp.tool()` decorators
+- `mailgun_mcp/main.py` - Main MCP server with 31 tools exposed via `@mcp.tool()` decorators
 - `tests/test_main.py` - Comprehensive test suite covering all tools
 - `pyproject.toml` - UV-based dependency management
 
@@ -30,11 +30,14 @@ export MAILGUN_DOMAIN="your-domain"  # Required only for message sending
 ### Running the MCP Server
 
 ```bash
-# Development server with auto-reload
-uvicorn mailgun_mcp.main:app --reload
+# Run via the Oneiric CLI (recommended; binds http://127.0.0.1:3039)
+python -m mailgun_mcp
 
-# Production server
-uvicorn mailgun_mcp.main:app
+# Development server with auto-reload (uvicorn --factory)
+uvicorn mailgun_mcp.main:http_app --factory --reload
+
+# Production server (uvicorn --factory, drop --reload)
+uvicorn mailgun_mcp.main:http_app --factory
 ```
 
 ### Testing

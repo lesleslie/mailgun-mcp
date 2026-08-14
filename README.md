@@ -2,7 +2,7 @@
 
 [![Code style: crackerjack](https://img.shields.io/badge/code%20style-crackerjack-000042)](https://github.com/lesleslie/crackerjack)
 [![Runtime: oneiric](https://img.shields.io/badge/runtime-oneiric-6e5494)](https://github.com/lesleslie/oneiric)
-[![Framework: FastMCP](https://img.shields.io/badge/framework-FastMCP-0ea5e9)](https://github.com/jlowin/fastmcp)
+[![Framework: FastMCP 3](https://img.shields.io/badge/framework-FastMCP%203-0ea5e9)](https://github.com/jlowin/fastmcp)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Python: 3.13+](https://img.shields.io/badge/python-3.13%2B-green)](https://www.python.org/downloads/)
 
@@ -22,8 +22,6 @@ The server provides access to the full Mailgun API including:
 - **Webhook Management**: Configure webhooks for event notifications
 
 ### Architecture Overview
-
-!Mailgun MCP Architecture
 
 ```mermaid
 graph TD
@@ -61,22 +59,64 @@ graph TD
 1. **Set environment variables:**
 
    ```bash
-   export MAILGUN_API_KEY="YOUR_API_KEY"
-   export MAILGUN_DOMAIN="YOUR_DOMAIN"
+   export MAILGUN_API_KEY="key-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+   # Must be a domain you've added and verified in the Mailgun dashboard,
+   # e.g. "mg.example.com" (the *sending* domain, not your root website domain).
+   export MAILGUN_DOMAIN="mg.example.com"
    ```
 
 1. **Run the server:**
 
+   The Oneiric CLI starts the server, registers tools, validates the API
+   key, and binds the HTTP transport on `http://127.0.0.1:3039` by default.
+
    ```bash
-   uvicorn mailgun_mcp.main:app --reload
+   python -m mailgun_mcp
+   # or, when using uv:
+   uv run python -m mailgun_mcp
    ```
+
+   For development with auto-reload, the underlying HTTP ASGI app is
+   reachable via `http_app`:
+
+   ```bash
+   uvicorn mailgun_mcp.main:http_app --factory --reload
+   ```
+
+   In production, drop `--reload`:
+
+   ```bash
+   uvicorn mailgun_mcp.main:http_app --factory
+   ```
+
+### Configuration
+
+Server settings come from `OneiricMCPConfig` with env prefix
+`MAILGUN_MCP_` and `[tool.mailgun-mcp]` in `pyproject.toml`:
+
+| Setting | Env var | Default |
+| --- | --- | --- |
+| HTTP host | `MAILGUN_MCP_HTTP_HOST` | `127.0.0.1` |
+| HTTP port | `MAILGUN_MCP_HTTP_PORT` | `3039` |
+| Enable HTTP transport | `MAILGUN_MCP_ENABLE_HTTP_TRANSPORT` | `true` |
 
 1. **Send a test email:**
 
-   Use the Mailgun API to send an email via an HTTP POST request with proper authentication.
-   For detailed instructions, see the Mailgun API documentation.
+   ```python
+   from fastmcp.client import Client
 
-   !Email Sending Flow
+   async with Client("http://127.0.0.1:3039/mcp") as client:
+       result = await client.call_tool(
+           "send_message",
+           {
+               "from": "[email protected]",
+               "to": "[email protected]",
+               "subject": "Hello from mailgun-mcp",
+               "text": "Hello, world!",
+           },
+       )
+       print(result)
+   ```
 
    ```mermaid
    flowchart TD
