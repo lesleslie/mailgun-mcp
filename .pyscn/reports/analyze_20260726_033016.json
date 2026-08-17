@@ -1,23 +1,5 @@
 {
   "complexity": {
-    "Functions": [],
-    "Summary": {
-      "TotalFunctions": 0,
-      "AverageComplexity": 0,
-      "MaxComplexity": 0,
-      "MinComplexity": 0,
-      "FilesAnalyzed": 2,
-      "LowRiskFunctions": 0,
-      "MediumRiskFunctions": 0,
-      "HighRiskFunctions": 0,
-      "ComplexityDistribution": null
-    },
-    "Warnings": null,
-    "Errors": [
-      "[mailgun_mcp/main.py] Parse error: syntax errors found in source code"
-    ],
-    "GeneratedAt": "2026-07-26T03:30:16-07:00",
-    "Version": "1.5.0",
     "Config": {
       "exclude_patterns": [
         "test_*.py",
@@ -34,30 +16,27 @@
       "recursive": false,
       "show_details": false,
       "sort_by": "complexity"
-    }
-  },
-  "dead_code": {
-    "files": null,
-    "summary": {
-      "total_files": 2,
-      "total_functions": 0,
-      "total_findings": 0,
-      "files_with_dead_code": 0,
-      "functions_with_dead_code": 0,
-      "critical_findings": 0,
-      "warning_findings": 0,
-      "info_findings": 0,
-      "findings_by_reason": {},
-      "total_blocks": 0,
-      "dead_blocks": 0,
-      "overall_dead_ratio": 0
     },
-    "warnings": null,
-    "errors": [
+    "Errors": [
       "[mailgun_mcp/main.py] Parse error: syntax errors found in source code"
     ],
-    "generated_at": "2026-07-26T03:30:16-07:00",
-    "version": "1.5.0",
+    "Functions": [],
+    "GeneratedAt": "2026-07-26T03:30:16-07:00",
+    "Summary": {
+      "AverageComplexity": 0,
+      "ComplexityDistribution": null,
+      "FilesAnalyzed": 2,
+      "HighRiskFunctions": 0,
+      "LowRiskFunctions": 0,
+      "MaxComplexity": 0,
+      "MediumRiskFunctions": 0,
+      "MinComplexity": 0,
+      "TotalFunctions": 0
+    },
+    "Version": "1.5.0",
+    "Warnings": null
+  },
+  "dead_code": {
     "config": {
       "context_lines": 3,
       "detect_after_break": true,
@@ -76,48 +55,69 @@
       "min_severity": "warning",
       "show_context": false,
       "sort_by": "severity"
-    }
+    },
+    "errors": [
+      "[mailgun_mcp/main.py] Parse error: syntax errors found in source code"
+    ],
+    "files": null,
+    "generated_at": "2026-07-26T03:30:16-07:00",
+    "summary": {
+      "critical_findings": 0,
+      "dead_blocks": 0,
+      "files_with_dead_code": 0,
+      "findings_by_reason": {},
+      "functions_with_dead_code": 0,
+      "info_findings": 0,
+      "overall_dead_ratio": 0,
+      "total_blocks": 0,
+      "total_files": 2,
+      "total_findings": 0,
+      "total_functions": 0,
+      "warning_findings": 0
+    },
+    "version": "1.5.0",
+    "warnings": null
   },
-  "summary": {
-    "total_files": 2,
-    "analyzed_files": 2,
-    "skipped_files": 0,
-    "complexity_enabled": true,
-    "dead_code_enabled": true,
-    "clone_enabled": false,
-    "cbo_enabled": false,
-    "deps_enabled": false,
-    "arch_enabled": false,
-    "deps_total_modules": 0,
-    "deps_modules_in_cycles": 0,
-    "deps_max_depth": 0,
-    "deps_main_sequence_deviation": 0,
-    "arch_compliance": 0,
-    "total_functions": 0,
-    "average_complexity": 0,
-    "high_complexity_count": 0,
-    "dead_code_count": 0,
-    "critical_dead_code": 0,
-    "warning_dead_code": 0,
-    "info_dead_code": 0,
-    "total_clones": 0,
-    "clone_pairs": 0,
-    "clone_groups": 0,
-    "code_duplication_percentage": 0,
-    "cbo_classes": 0,
-    "high_coupling_classes": 0,
-    "medium_coupling_classes": 0,
-    "average_coupling": 0,
-    "health_score": 100,
-    "grade": "A",
-    "complexity_score": 100,
-    "dead_code_score": 100,
-    "duplication_score": 100,
-    "coupling_score": 100,
-    "dependency_score": 100,
-    "architecture_score": 100
-  },
-  "generated_at": "2026-07-26T03:30:16.588507-07:00",
   "duration_ms": 31,
+  "generated_at": "2026-07-26T03:30:16.588507-07:00",
+  "summary": {
+    "analyzed_files": 2,
+    "arch_compliance": 0,
+    "arch_enabled": false,
+    "architecture_score": 100,
+    "average_complexity": 0,
+    "average_coupling": 0,
+    "cbo_classes": 0,
+    "cbo_enabled": false,
+    "clone_enabled": false,
+    "clone_groups": 0,
+    "clone_pairs": 0,
+    "code_duplication_percentage": 0,
+    "complexity_enabled": true,
+    "complexity_score": 100,
+    "coupling_score": 100,
+    "critical_dead_code": 0,
+    "dead_code_count": 0,
+    "dead_code_enabled": true,
+    "dead_code_score": 100,
+    "dependency_score": 100,
+    "deps_enabled": false,
+    "deps_main_sequence_deviation": 0,
+    "deps_max_depth": 0,
+    "deps_modules_in_cycles": 0,
+    "deps_total_modules": 0,
+    "duplication_score": 100,
+    "grade": "A",
+    "health_score": 100,
+    "high_complexity_count": 0,
+    "high_coupling_classes": 0,
+    "info_dead_code": 0,
+    "medium_coupling_classes": 0,
+    "skipped_files": 0,
+    "total_clones": 0,
+    "total_files": 2,
+    "total_functions": 0,
+    "warning_dead_code": 0
+  },
   "version": "1.5.0"
 }
