@@ -49,3 +49,17 @@ htmlcov/
 /.backup/
 .backups/
 .backup/
+
+# Runtime artifacts (bodai cleanup 2026-08-17)
+.crackerjack/
+.crackerjack/outputs/
+.crackerjack-state/
+.crackerjack-hooks-updated/
+.crackerjack-mcp/
+.oneiric_cache/
+*.bak2
+*.backup.*
+coverage.json
+*.pyo
+*.pyd
+example.mcp.json
