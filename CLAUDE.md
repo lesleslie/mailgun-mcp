@@ -13,8 +13,8 @@ This is a comprehensive Mailgun MCP (Model Context Protocol) server built with F
 - `mailgun_mcp/main.py` - Main MCP server with 31 tools exposed via `register_<group>_tools()` functions (W2b.1 callable-mode architecture; previously `@mcp.tool()` decorators)
 - `mailgun_mcp/tools/profiles.py` - Tool profile dispatch surface (`PROFILE_REGISTRATIONS`, `_build_registration_map`, `register_all_tool_groups`)
 - `mailgun_mcp/__main__.py` - Oneiric CLI entry point; calls `apply_mailgun_tool_profile` from `startup()`
-- `tests/unit/test_tool_profile.py` - Tool profile wiring tests (17 tests)
-- `tests/fixtures/full/tool_names.json` - Golden fixture for FULL profile behavioral parity
+- `tests/unit/test_tool_profile.py` - Tool profile wiring tests (16 tests)
+- `tests/unit/test_tool_profile.py::test_full_registers_all_31_tools` - Inline parity assertion for FULL profile (replaces deleted golden fixture)
 - `docs/architecture/tool-profile-rationale.md` - 3-tier profile rationale
 - `pyproject.toml` - UV-based dependency management
 

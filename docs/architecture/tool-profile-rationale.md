@@ -65,11 +65,13 @@ groups stay out of the STANDARD tier.
   HTTP route registered via `register_http_health_route` from mcp-common).
   `MAILGUN_MANDATORY_GROUPS` is therefore an empty set, and
   `essential_tool_names=set()` opts out of the subset check.
-- The startup banner at module import still prints "31 email management
-  tools available" — the message is misleading under MINIMAL/STANDARD
-  profiles (where 0 / 18 tools actually register). Left as a cosmetic
-  concern for a future cleanup PR; the W0 helper logs the actual
-  registered count at startup time, which is the source of truth.
+- The startup banner at module import is now gated behind
+  `MAILGUN_TOOL_PROFILE in {"", "full"}` (W2b.1 round 1-fix). Under
+  MINIMAL/STANDARD the banner prints
+  `profile=<X> — see startup log for actual tool count` instead of the
+  misleading hardcoded `31`. The W0 helper's startup log
+  (`Applied MAILGUN_TOOL_PROFILE=... → N tools registered`) is the
+  source of truth for the actual count.
 - The `tests/conftest.py::_patch_tool_objects` autouse fixture wraps
   every `mailgun_mcp.main` tool name in a `_ToolWrapper` for FastMCP 2.x
   test compatibility. The W2b.1 wiring tests opt out via
