@@ -10,9 +10,26 @@ This is a comprehensive Mailgun MCP (Model Context Protocol) server built with F
 
 ## Project Structure
 
-- `mailgun_mcp/main.py` - Main MCP server with 31 tools exposed via `@mcp.tool()` decorators
-- `tests/test_main.py` - Comprehensive test suite covering all tools
+- `mailgun_mcp/main.py` - Main MCP server with 31 tools exposed via `register_<group>_tools()` functions (W2b.1 callable-mode architecture; previously `@mcp.tool()` decorators)
+- `mailgun_mcp/tools/profiles.py` - Tool profile dispatch surface (`PROFILE_REGISTRATIONS`, `_build_registration_map`, `register_all_tool_groups`)
+- `mailgun_mcp/__main__.py` - Oneiric CLI entry point; calls `apply_mailgun_tool_profile` from `startup()`
+- `tests/unit/test_tool_profile.py` - Tool profile wiring tests (17 tests)
+- `tests/fixtures/full/tool_names.json` - Golden fixture for FULL profile behavioral parity
+- `docs/architecture/tool-profile-rationale.md` - 3-tier profile rationale
 - `pyproject.toml` - UV-based dependency management
+
+## Tool Profile System
+
+mailgun-mcp uses the shared `_apply_tool_profile()` helper from `mcp-common`
+(>=0.18.0) to gate tool visibility per client.
+
+- **Env var:** `MAILGUN_TOOL_PROFILE` (values: `minimal` / `standard` / `full`; default `full`)
+- **Tier mapping** (full table in `docs/architecture/tool-profile-rationale.md`):
+  - `MINIMAL`: 0 mailgun tools (only `discover_tools` meta-tool)
+  - `STANDARD`: 18 daily-driver tools (send, stats, events, domain, routes, templates)
+  - `FULL`: 31 tools (all groups, including suppression + webhook management)
+- **Wiring:** `mailgun_mcp.main.apply_mailgun_tool_profile(server)` — async helper invoked from `MailgunMCPServer.startup()` in `__main__.py`.
+- **Discovery:** `discover_tools` is auto-registered by the W0 helper at every tier.
 
 ## Development Commands
 

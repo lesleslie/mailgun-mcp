@@ -8,7 +8,7 @@ authors = [
 requires-python = ">=3.13"
 dependencies = [
     "fastmcp",
-    "mcp-common>=0.17.0",
+    "mcp-common>=0.18.0",
     "oneiric>=0.16.0",
 ]
 
@@ -62,6 +62,7 @@ markers = [
     "benchmark: mark test as a benchmark",
     "integration: marks test as an integration test",
     "no_leaks: detect asyncio task leaks",
+    "no_tool_wrapper: skip the _patch_tool_objects autouse fixture (W2b.1 tool profile wiring tests)",
 ]
 
 [tool.creosote]

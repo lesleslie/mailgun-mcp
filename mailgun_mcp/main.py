@@ -308,11 +308,6 @@ def _build_email_data(
     return email_data
 
 
-@mcp.tool(
-    name="send_message",
-    description="Send an email message via Mailgun API",
-    output_schema=None,  # Disable automatic serialization so we can return raw values
-)
 async def send_message(
     from_email: str,
     to: str,
@@ -374,11 +369,6 @@ async def send_message(
     }
 
 
-@mcp.tool(
-    name="get_domains",
-    description="Get a list of domains from Mailgun",
-    output_schema=None,
-)
 async def get_domains(limit: int | None = 100, skip: int | None = 0) -> dict[str, Any]:
     """Get a list of domains from Mailgun API"""
     if not get_mailgun_api_key():
@@ -409,11 +399,6 @@ async def get_domains(limit: int | None = 100, skip: int | None = 0) -> dict[str
     }
 
 
-@mcp.tool(
-    name="get_domain",
-    description="Get information about a specific domain from Mailgun",
-    output_schema=None,
-)
 async def get_domain(domain_name: str) -> dict[str, Any]:
     """Get information about a specific domain from Mailgun API"""
     if not get_mailgun_api_key():
@@ -441,11 +426,6 @@ async def get_domain(domain_name: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="create_domain",
-    description="Create a new domain in Mailgun",
-    output_schema=None,
-)
 async def create_domain(
     domain_name: str,
     smtp_password: str,
@@ -495,9 +475,6 @@ async def create_domain(
     }
 
 
-@mcp.tool(
-    name="delete_domain", description="Delete a domain from Mailgun", output_schema=None
-)
 async def delete_domain(domain_name: str) -> dict[str, Any]:
     """Delete a domain from Mailgun API"""
     if not get_mailgun_api_key():
@@ -525,11 +502,6 @@ async def delete_domain(domain_name: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="verify_domain",
-    description="Trigger verification of a domain in Mailgun",
-    output_schema=None,
-)
 async def verify_domain(domain_name: str) -> dict[str, Any]:
     """Verify a domain in Mailgun API"""
     if not get_mailgun_api_key():
@@ -557,11 +529,6 @@ async def verify_domain(domain_name: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_events",
-    description="Get email events (opens, clicks, deliveries, etc.) from Mailgun",
-    output_schema=None,
-)
 async def get_events(
     domain_name: str,
     event: str | None = None,
@@ -609,11 +576,6 @@ async def get_events(
     }
 
 
-@mcp.tool(
-    name="get_stats",
-    description="Get email statistics from Mailgun",
-    output_schema=None,
-)
 async def get_stats(
     domain_name: str,
     event: list[str],
@@ -658,9 +620,6 @@ async def get_stats(
     }
 
 
-@mcp.tool(
-    name="get_bounces", description="Get email bounces from Mailgun", output_schema=None
-)
 async def get_bounces(
     domain_name: str, limit: int | None = 100, skip: int | None = 0
 ) -> dict[str, Any]:
@@ -693,11 +652,6 @@ async def get_bounces(
     }
 
 
-@mcp.tool(
-    name="add_bounce",
-    description="Add an email address to the bounce list in Mailgun",
-    output_schema=None,
-)
 async def add_bounce(
     domain_name: str, address: str, code: int | None = 550, error: str | None = None
 ) -> dict[str, Any]:
@@ -737,11 +691,6 @@ async def add_bounce(
     }
 
 
-@mcp.tool(
-    name="delete_bounce",
-    description="Remove an email address from the bounce list in Mailgun",
-    output_schema=None,
-)
 async def delete_bounce(domain_name: str, address: str) -> dict[str, Any]:
     """Remove an email address from bounce list in Mailgun API"""
     if not get_mailgun_api_key():
@@ -769,11 +718,6 @@ async def delete_bounce(domain_name: str, address: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_complaints",
-    description="Get email complaints from Mailgun",
-    output_schema=None,
-)
 async def get_complaints(
     domain_name: str, limit: int | None = 100, skip: int | None = 0
 ) -> dict[str, Any]:
@@ -806,11 +750,6 @@ async def get_complaints(
     }
 
 
-@mcp.tool(
-    name="add_complaint",
-    description="Add an email address to the complaints list in Mailgun",
-    output_schema=None,
-)
 async def add_complaint(domain_name: str, address: str) -> dict[str, Any]:
     """Add an email address to complaints list in Mailgun API"""
     if not get_mailgun_api_key():
@@ -843,11 +782,6 @@ async def add_complaint(domain_name: str, address: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="delete_complaint",
-    description="Remove an email address from the complaints list in Mailgun",
-    output_schema=None,
-)
 async def delete_complaint(domain_name: str, address: str) -> dict[str, Any]:
     """Remove an email address from complaints list in Mailgun API"""
     if not get_mailgun_api_key():
@@ -875,11 +809,6 @@ async def delete_complaint(domain_name: str, address: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_unsubscribes",
-    description="Get unsubscribed email addresses from Mailgun",
-    output_schema=None,
-)
 async def get_unsubscribes(
     domain_name: str, limit: int | None = 100, skip: int | None = 0
 ) -> dict[str, Any]:
@@ -912,11 +841,6 @@ async def get_unsubscribes(
     }
 
 
-@mcp.tool(
-    name="add_unsubscribe",
-    description="Add an email address to the unsubscribes list in Mailgun",
-    output_schema=None,
-)
 async def add_unsubscribe(
     domain_name: str, address: str, tag: str | None = "*"
 ) -> dict[str, Any]:
@@ -949,11 +873,6 @@ async def add_unsubscribe(
     }
 
 
-@mcp.tool(
-    name="delete_unsubscribe",
-    description="Remove an email address from the unsubscribes list in Mailgun",
-    output_schema=None,
-)
 async def delete_unsubscribe(
     domain_name: str, address: str, tag: str | None = "*"
 ) -> dict[str, Any]:
@@ -986,7 +905,6 @@ async def delete_unsubscribe(
     }
 
 
-@mcp.tool(name="get_routes", description="Get routes from Mailgun", output_schema=None)
 async def get_routes(limit: int | None = 100, skip: int | None = 0) -> dict[str, Any]:
     """Get routes from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1017,11 +935,6 @@ async def get_routes(limit: int | None = 100, skip: int | None = 0) -> dict[str,
     }
 
 
-@mcp.tool(
-    name="get_route",
-    description="Get a specific route from Mailgun",
-    output_schema=None,
-)
 async def get_route(route_id: str) -> dict[str, Any]:
     """Get a specific route from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1049,9 +962,6 @@ async def get_route(route_id: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="create_route", description="Create a new route in Mailgun", output_schema=None
-)
 async def create_route(
     priority: int, expression: str, action: list[str], description: str | None = None
 ) -> dict[str, Any]:
@@ -1091,11 +1001,6 @@ async def create_route(
     }
 
 
-@mcp.tool(
-    name="update_route",
-    description="Update an existing route in Mailgun",
-    output_schema=None,
-)
 async def update_route(
     route_id: str,
     priority: int | None = None,
@@ -1141,9 +1046,6 @@ async def update_route(
     }
 
 
-@mcp.tool(
-    name="delete_route", description="Delete a route from Mailgun", output_schema=None
-)
 async def delete_route(route_id: str) -> dict[str, Any]:
     """Delete a route from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1171,11 +1073,6 @@ async def delete_route(route_id: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_templates",
-    description="Get a list of templates from Mailgun",
-    output_schema=None,
-)
 async def get_templates(
     limit: int | None = 100, skip: int | None = 0
 ) -> dict[str, Any]:
@@ -1208,11 +1105,6 @@ async def get_templates(
     }
 
 
-@mcp.tool(
-    name="get_template",
-    description="Get information about a specific template from Mailgun",
-    output_schema=None,
-)
 async def get_template(template_name: str) -> dict[str, Any]:
     """Get information about a specific template from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1240,11 +1132,6 @@ async def get_template(template_name: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="create_template",
-    description="Create a new template in Mailgun",
-    output_schema=None,
-)
 async def create_template(
     name: str,
     subject: str,
@@ -1290,11 +1177,6 @@ async def create_template(
     }
 
 
-@mcp.tool(
-    name="update_template",
-    description="Update an existing template in Mailgun",
-    output_schema=None,
-)
 async def update_template(
     template_name: str,
     description: str | None = None,
@@ -1346,11 +1228,6 @@ async def update_template(
     }
 
 
-@mcp.tool(
-    name="delete_template",
-    description="Delete a template from Mailgun",
-    output_schema=None,
-)
 async def delete_template(template_name: str) -> dict[str, Any]:
     """Delete a template from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1378,9 +1255,6 @@ async def delete_template(template_name: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_webhooks", description="Get all webhooks from Mailgun", output_schema=None
-)
 async def get_webhooks() -> dict[str, Any]:
     """Get all webhooks from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1408,11 +1282,6 @@ async def get_webhooks() -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="get_webhook",
-    description="Get a specific webhook from Mailgun",
-    output_schema=None,
-)
 async def get_webhook(webhook_type: str) -> dict[str, Any]:
     """Get a specific webhook from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1440,11 +1309,6 @@ async def get_webhook(webhook_type: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="create_webhook",
-    description="Create or update a webhook in Mailgun",
-    output_schema=None,
-)
 async def create_webhook(webhook_type: str, url: str) -> dict[str, Any]:
     """Create or update a webhook in Mailgun API"""
     if not get_mailgun_api_key():
@@ -1475,11 +1339,6 @@ async def create_webhook(webhook_type: str, url: str) -> dict[str, Any]:
     }
 
 
-@mcp.tool(
-    name="delete_webhook",
-    description="Delete a webhook from Mailgun",
-    output_schema=None,
-)
 async def delete_webhook(webhook_type: str) -> dict[str, Any]:
     """Delete a webhook from Mailgun API"""
     if not get_mailgun_api_key():
@@ -1529,3 +1388,343 @@ def __getattr__(name: str) -> Any:
     if name == "http_app":
         return get_app().http_app
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+
+
+# ---------------------------------------------------------------------------
+# Tool profile registration
+# ---------------------------------------------------------------------------
+# Each ``register_<group>_tools(server)`` registers a domain's tools via
+# ``server.add_tool(Tool.from_function(...))``. The ``_apply_tool_profile``
+# call (after this block) selects which groups register at startup based on
+# the ``MAILGUN_TOOL_PROFILE`` environment variable.
+#
+# Profile tiers:
+#     MINIMAL:  no tools registered (only ``discover_tools`` + health route)
+#     STANDARD: send, stats, events, domain, routes, templates
+#     FULL:     everything above plus suppression + webhook management
+from fastmcp.tools import Tool
+from mcp_common.tools.dispatch import _apply_tool_profile
+
+from mailgun_mcp.tools.profiles import PROFILE_REGISTRATIONS, register_all_tool_groups
+
+
+def register_send_tools(server: FastMCP) -> None:
+    """Register the send_tools group (1 tool)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=send_message,
+            name="send_message",
+            description="Send an email message via Mailgun API",
+            output_schema=None,
+        )
+    )
+
+
+def register_stats_tools(server: FastMCP) -> None:
+    """Register the stats_tools group (1 tool)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_stats,
+            name="get_stats",
+            description="Get email statistics from Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_events_tools(server: FastMCP) -> None:
+    """Register the events_tools group (1 tool)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_events,
+            name="get_events",
+            description="Get email events (opens, clicks, deliveries, etc.) from Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_domain_tools(server: FastMCP) -> None:
+    """Register the domain_tools group (5 tools)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_domains,
+            name="get_domains",
+            description="Get a list of domains from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_domain,
+            name="get_domain",
+            description="Get information about a specific domain from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=create_domain,
+            name="create_domain",
+            description="Create a new domain in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_domain,
+            name="delete_domain",
+            description="Delete a domain from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=verify_domain,
+            name="verify_domain",
+            description="Trigger verification of a domain in Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_routes_tools(server: FastMCP) -> None:
+    """Register the routes_tools group (5 tools)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_routes,
+            name="get_routes",
+            description="Get routes from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_route,
+            name="get_route",
+            description="Get a specific route from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=create_route,
+            name="create_route",
+            description="Create a new route in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=update_route,
+            name="update_route",
+            description="Update an existing route in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_route,
+            name="delete_route",
+            description="Delete a route from Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_templates_tools(server: FastMCP) -> None:
+    """Register the templates_tools group (5 tools)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_templates,
+            name="get_templates",
+            description="Get a list of templates from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_template,
+            name="get_template",
+            description="Get information about a specific template from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=create_template,
+            name="create_template",
+            description="Create a new template in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=update_template,
+            name="update_template",
+            description="Update an existing template in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_template,
+            name="delete_template",
+            description="Delete a template from Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_suppression_tools(server: FastMCP) -> None:
+    """Register the suppression_tools group (9 tools)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_bounces,
+            name="get_bounces",
+            description="Get email bounces from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=add_bounce,
+            name="add_bounce",
+            description="Add an email address to the bounce list in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_bounce,
+            name="delete_bounce",
+            description="Remove an email address from the bounce list in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_complaints,
+            name="get_complaints",
+            description="Get email complaints from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=add_complaint,
+            name="add_complaint",
+            description="Add an email address to the complaints list in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_complaint,
+            name="delete_complaint",
+            description="Remove an email address from the complaints list in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_unsubscribes,
+            name="get_unsubscribes",
+            description="Get unsubscribed email addresses from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=add_unsubscribe,
+            name="add_unsubscribe",
+            description="Add an email address to the unsubscribes list in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_unsubscribe,
+            name="delete_unsubscribe",
+            description="Remove an email address from the unsubscribes list in Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+def register_webhook_tools(server: FastMCP) -> None:
+    """Register the webhook_tools group (4 tools)."""
+    server.add_tool(
+        Tool.from_function(
+            fn=get_webhooks,
+            name="get_webhooks",
+            description="Get all webhooks from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=get_webhook,
+            name="get_webhook",
+            description="Get a specific webhook from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=create_webhook,
+            name="create_webhook",
+            description="Create or update a webhook in Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=delete_webhook,
+            name="delete_webhook",
+            description="Delete a webhook from Mailgun",
+            output_schema=None,
+        )
+    )
+
+
+# Mailgun has no health-check MCP tools (only a /healthz HTTP route); MANDATORY_GROUPS
+# is intentionally empty. Set essential_tool_names=set() to opt out of the
+# subset check (mcp-common 0.18.0 default is empty).
+MAILGUN_MANDATORY_GROUPS: set[str] = set()
+
+
+async def apply_mailgun_tool_profile(server: FastMCP) -> None:
+    """Apply the MAILGUN_TOOL_PROFILE dispatch to ``server`` at startup.
+
+    Async because the W0 helper is async; called from the server's
+    ``startup()`` lifecycle hook (see ``mailgun_mcp.__main__``).
+    """
+    # Lazy import: mailgun_mcp.tools.profiles lazily imports main.register_*,
+    # which in turn imports profiles (circular). Resolve REGISTRATION_MAP at
+    # call time, not module-import time.
+    from mailgun_mcp.tools.profiles import _build_registration_map
+
+    await _apply_tool_profile(
+        server,
+        profile_env_var="MAILGUN_TOOL_PROFILE",
+        registrations=PROFILE_REGISTRATIONS,
+        registration_map=_build_registration_map(),
+        register_all_fn=register_all_tool_groups,
+        mandatory_groups=MAILGUN_MANDATORY_GROUPS,
+        essential_tool_names=set(),
+    )
+
+
+__all__ = [
+    "apply_mailgun_tool_profile",
+    "register_all_tool_groups",
+    "register_domain_tools",
+    "register_events_tools",
+    "register_routes_tools",
+    "register_send_tools",
+    "register_stats_tools",
+    "register_suppression_tools",
+    "register_templates_tools",
+    "register_webhook_tools",
+]

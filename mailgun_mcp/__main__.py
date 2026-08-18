@@ -9,7 +9,11 @@ from oneiric.core.config import OneiricMCPConfig
 from oneiric.runtime.mcp_health import HealthCheckResponse, HealthStatus
 
 # Import the main server from the existing codebase
-from mailgun_mcp.main import mcp, validate_api_key_at_startup
+from mailgun_mcp.main import (
+    apply_mailgun_tool_profile,
+    mcp,
+    validate_api_key_at_startup,
+)
 
 
 class MailgunConfig(OneiricMCPConfig):
@@ -48,6 +52,10 @@ class MailgunMCPServer(BaseOneiricServerMixin):
 
     async def startup(self) -> None:
         """Server startup lifecycle hook."""
+        # Apply MAILGUN_TOOL_PROFILE dispatch (registers the per-profile tool
+        # groups via the W0 helper from mcp-common).
+        await apply_mailgun_tool_profile(self.mcp)
+
         # Validate API key at startup
         validate_api_key_at_startup()
 

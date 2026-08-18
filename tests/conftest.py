@@ -123,13 +123,22 @@ _WRAPPERS: dict[str, _ToolWrapper] = _build_wrappers()
 
 
 @pytest.fixture(autouse=True)
-def _patch_tool_objects(monkeypatch: pytest.MonkeyPatch) -> None:
+def _patch_tool_objects(monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest) -> None:
     """Replace each ``@mcp.tool``-decorated name with a 2.x-shaped wrapper.
 
     Patches both ``mailgun_mcp.main`` and any already-loaded test module so
     that test-side imports (``from mailgun_mcp.main import send_message``)
     see the wrapper, not the raw function.
+
+    Skipped for tests marked ``@pytest.mark.no_tool_wrapper`` (or in modules
+    under ``tests/unit/`` that opt-out via the ``profile_test`` marker) — the
+    W2b.1 tool-profile wiring tests need access to the raw functions so that
+    ``Tool.from_function(fn=...)`` can introspect their signatures without
+    hitting the wrapper's ``*args, **kwargs`` rejection.
     """
+    marker = request.node.get_closest_marker("no_tool_wrapper")
+    if marker is not None:
+        return
     for name, wrapper in _WRAPPERS.items():
         monkeypatch.setattr(_main, name, wrapper, raising=False)
 
