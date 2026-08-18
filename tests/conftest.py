@@ -130,9 +130,8 @@ def _patch_tool_objects(monkeypatch: pytest.MonkeyPatch, request: pytest.Fixture
     that test-side imports (``from mailgun_mcp.main import send_message``)
     see the wrapper, not the raw function.
 
-    Skipped for tests marked ``@pytest.mark.no_tool_wrapper`` (or in modules
-    under ``tests/unit/`` that opt-out via the ``profile_test`` marker) — the
-    W2b.1 tool-profile wiring tests need access to the raw functions so that
+    Skipped for tests marked ``@pytest.mark.no_tool_wrapper`` — the W2b.1
+    tool-profile wiring tests need access to the raw functions so that
     ``Tool.from_function(fn=...)`` can introspect their signatures without
     hitting the wrapper's ``*args, **kwargs`` rejection.
     """

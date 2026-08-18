@@ -8,8 +8,6 @@ callable-mode architecture (MINIMAL / STANDARD / FULL) gated by the
 from __future__ import annotations
 
 import ast
-import asyncio
-import json
 from pathlib import Path
 
 import pytest
@@ -284,30 +282,6 @@ async def test_minimal_has_only_discover_tools(monkeypatch: pytest.MonkeyPatch) 
 
     assert names == {"discover_tools"}, (
         f"MINIMAL must only register discover_tools; got: {sorted(names)}"
-    )
-
-
-@pytest.mark.no_tool_wrapper
-def test_full_matches_golden_fixture() -> None:
-    """FULL profile must register every tool name captured in the pre-refactor fixture."""
-    fixture = REPO_ROOT / "tests" / "fixtures" / "full" / "tool_names.json"
-    if not fixture.exists():
-        pytest.skip(f"Golden fixture missing: {fixture}")
-    expected = set(json.loads(fixture.read_text()))
-
-    asyncio.run(_assert_full_superset(expected))
-
-
-async def _assert_full_superset(expected: set[str]) -> None:
-    from fastmcp import FastMCP
-
-    from mailgun_mcp.main import apply_mailgun_tool_profile
-
-    server = FastMCP(name="Test", instructions="test")
-    await apply_mailgun_tool_profile(server)
-    actual = {t.name for t in await server.list_tools()}
-    assert expected.issubset(actual), (
-        f"FULL missing from fixture: {sorted(expected - actual)}"
     )
 
 

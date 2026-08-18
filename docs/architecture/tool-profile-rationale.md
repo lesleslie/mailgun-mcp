@@ -41,10 +41,11 @@ groups stay out of the STANDARD tier.
 - **Context reduction.** STANDARD (19 tools with `discover_tools`) vs FULL
   (32 tools) is a 41 % reduction in tool descriptions sent on every MCP
   initialize handshake. Useful for daily-driver Claude sessions.
-- **Behavioral parity.** FULL profile registers exactly the same 31 tool
-  names as the pre-refactor decorator-mode path (verified against
-  `tests/fixtures/full/tool_names.json`). No regression in capability
-  for operators that opt into FULL.
+- **Behavioral parity.** FULL profile registers exactly the same 31 mailgun
+  tool names as the pre-refactor decorator-mode path (verified by the
+  `test_full_registers_all_31_tools` assertion in
+  `tests/unit/test_tool_profile.py`, which pins the full tool-name set
+  inline). No regression in capability for operators that opt into FULL.
 - **Discoverability.** `discover_tools` meta-tool (auto-registered by the
   W0 helper) returns the live tool list with descriptions, so clients can
   confirm what their tier exposes.
@@ -54,7 +55,7 @@ groups stay out of the STANDARD tier.
 1. **Environment variable** `MAILGUN_TOOL_PROFILE` — `minimal` /
    `standard` / `full`. Default `full` if unset (matches the pre-refactor
    behavior of "register everything").
-2. (Future) `settings/local.yaml` `tool_profile:` — supported via
+1. (Future) `settings/local.yaml` `tool_profile:` — supported via
    `yaml_loader=` parameter to the W0 helper, not currently wired in
    mailgun-mcp (matches the ecosystem convention of env-var-first).
 
@@ -74,7 +75,7 @@ groups stay out of the STANDARD tier.
   test compatibility. The W2b.1 wiring tests opt out via
   `@pytest.mark.no_tool_wrapper` so that `Tool.from_function(fn=...)`
   sees the raw function (the wrapper's `*args, **kwargs` signature
-  trips FastMCP's "Functions with *args are not supported as tools"
+  trips FastMCP's "Functions with \*args are not supported as tools"
   validator).
 
 ## References
@@ -83,4 +84,4 @@ groups stay out of the STANDARD tier.
 - W2a template (Crackerjack retrofit): task-6-report.md
 - W1.4 reference (Akosha callable-mode retrofit): task-4-report.md
 - mcp-common W0 helper: `/Users/les/Projects/mcp-common/mcp_common/tools/dispatch.py`
-- Golden fixture: `tests/fixtures/full/tool_names.json`
+- Behavioral parity assertion: `tests/unit/test_tool_profile.py::test_full_registers_all_31_tools`

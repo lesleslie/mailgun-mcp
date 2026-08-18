@@ -145,10 +145,21 @@ def validate_api_key_at_startup() -> None:
 if __name__ == "__main__":
     validate_api_key_at_startup()
 
-# Display beautiful startup message (when module is loaded)
+# Display beautiful startup message (when module is loaded).
+# The tool-count line is only accurate at FULL profile (or unset env var,
+# which defaults to FULL). Under MINIMAL/STANDARD the W0 helper logs the
+# real count at startup; suppress the misleading line in those tiers.
 if __name__ != "__main__":  # Only show on server load, not on imports
+    _profile = os.environ.get("MAILGUN_TOOL_PROFILE", "").strip().lower()
+    _show_full_count = _profile in {"", "full"}
     print("\n✅ Mailgun Email MCP Server Ready", file=sys.stderr)
-    print("   31 email management tools available", file=sys.stderr)
+    if _show_full_count:
+        print("   31 email management tools available", file=sys.stderr)
+    else:
+        print(
+            f"   profile={_profile or 'full'!r} — see startup log for actual tool count",
+            file=sys.stderr,
+        )
     print("   ⚡ Connection pooling enabled (11x faster)\n", file=sys.stderr)
 
 
