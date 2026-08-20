@@ -43,12 +43,12 @@ class TestPydanticModelsAvailability:
         # Attempt to import models - they should not exist yet
         try:
             from mailgun_mcp.models import (  # ty: ignore[unresolved-import]
-                Domain,
-                Event,
-                Message,
-                Route,
-                Template,
-                Webhook,
+                Domain,  # noqa: F401
+                Event,  # noqa: F401
+                Message,  # noqa: F401
+                Route,  # noqa: F401
+                Template,  # noqa: F401
+                Webhook,  # noqa: F401
             )
 
             # If we get here, models have been added - update tests!

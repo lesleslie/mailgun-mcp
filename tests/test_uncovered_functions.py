@@ -22,11 +22,11 @@ def test_basic_auth_equality():
 
     # Test equality with another BasicAuth instance
     assert auth1 == auth2
-    assert not auth1 == auth3
+    assert auth1 != auth3
 
     # Test equality with tuple
     assert auth1 == ("user", "pass")
-    assert not auth1 == ("user", "different_pass")
+    assert auth1 != ("user", "different_pass")
 
     # Test equality with httpx BasicAuth-like object
     class MockAuth:
@@ -36,7 +36,7 @@ def test_basic_auth_equality():
 
     mock_auth = MockAuth("user", "pass")
     assert auth1 == mock_auth
-    assert not auth1 == MockAuth("user", "different_pass")
+    assert auth1 != MockAuth("user", "different_pass")
 
 
 def test_basic_auth_repr():

@@ -27,16 +27,19 @@ def test_profiles_py_defines_profile_registrations() -> None:
     tree = ast.parse(profiles.read_text())
     found = False
     for node in ast.walk(tree):
-        if isinstance(node, ast.Assign) and any(
-            isinstance(t, ast.Name) and t.id == "PROFILE_REGISTRATIONS"
-            for t in node.targets
+        if (
+            isinstance(node, ast.Assign)
+            and any(
+                isinstance(t, ast.Name) and t.id == "PROFILE_REGISTRATIONS"
+                for t in node.targets
+            )
+        ) or (
+            isinstance(node, ast.AnnAssign)
+            and isinstance(node.target, ast.Name)
+            and node.target.id == "PROFILE_REGISTRATIONS"
         ):
             found = True
             break
-        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
-            if node.target.id == "PROFILE_REGISTRATIONS":
-                found = True
-                break
     assert found, "PROFILE_REGISTRATIONS not defined in profiles.py"
 
 
@@ -151,9 +154,12 @@ def test_main_py_wires_tool_profile_env_var() -> None:
         if not (isinstance(node.func, ast.Name) and node.func.id == "_apply_tool_profile"):
             continue
         for kw in node.keywords:
-            if kw.arg == "profile_env_var":
-                if isinstance(kw.value, ast.Constant) and kw.value.value == "MAILGUN_TOOL_PROFILE":
-                    found = True
+            if (
+                kw.arg == "profile_env_var"
+                and isinstance(kw.value, ast.Constant)
+                and kw.value.value == "MAILGUN_TOOL_PROFILE"
+            ):
+                found = True
     assert found, "_apply_tool_profile call must pass profile_env_var='MAILGUN_TOOL_PROFILE'"
 
 
@@ -287,8 +293,9 @@ async def test_minimal_has_only_discover_tools(monkeypatch: pytest.MonkeyPatch) 
 
 def test_profile_registrations_subset_of_map() -> None:
     """Every key referenced in PROFILE_REGISTRATIONS must exist in REGISTRATION_MAP."""
-    from mailgun_mcp.tools.profiles import _build_registration_map
     from mcp_common.tools import ToolProfile
+
+    from mailgun_mcp.tools.profiles import _build_registration_map
 
     mapping = _build_registration_map()
     for profile, regs in {

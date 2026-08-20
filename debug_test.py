@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import asyncio
 from unittest.mock import patch
 

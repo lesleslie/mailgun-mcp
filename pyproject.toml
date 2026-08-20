@@ -29,10 +29,11 @@ enable_http_transport = true
 [tool.ruff]
 target-version = "py313"
 line-length = 88
-fix = true
+fix = false
 unsafe-fixes = true
 show-fixes = true
 output-format = "full"
+extend-exclude = ["docs/archive/test-artifacts"]
 
 [tool.ruff.format]
 docstring-code-format = true

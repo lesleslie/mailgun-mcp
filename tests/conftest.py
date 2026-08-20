@@ -30,7 +30,6 @@ import pytest
 
 import mailgun_mcp.main as _main
 
-
 # Tool function names that the test suite imports from mailgun_mcp.main.
 # Each one is a top-level async function decorated with ``@mcp.tool(...)``.
 _TOOL_NAMES: tuple[str, ...] = (
