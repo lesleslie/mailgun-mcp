@@ -1,0 +1,17 @@
+{
+  "author": {
+    "name": "Bodai"
+  },
+  "description": "Bodai plugin for the mailgun-mcp email API server.",
+  "keywords": [
+    "bodai",
+    "mcp",
+    "mailgun",
+    "email",
+    "transactional-email"
+  ],
+  "mcpServers": "./.mcp.json",
+  "name": "mailgun",
+  "schema_version": "1.0.0",
+  "version": "0.1.0"
+}
