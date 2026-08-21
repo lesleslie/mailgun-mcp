@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-08-20
+
+### Added
+
+- mailgun-mcp: Adopt apply_tool_profile with MAILGUN_TOOL_PROFILE
+- mailgun: Bodai plugin conversion (manifest, mcp.json, slash commands)
+
+### Fixed
+
+- mailgun-mcp: Reviewer fixes round 1 — banner gating, fixture deletion
+- mailgun-mcp: Ruff cleanup + disable destructive fix mode
+- mailgun-mcp: Untrack .pyscn/reports/ artifacts
+
+### Documentation
+
+- mailgun-mcp: Update CLAUDE.md + rationale for round 1 fixture deletion
+
+### Internal
+
+- Gitignore runtime artifacts + untrack previously-tracked cache files (bodai cleanup 2026-08-17)
+- gitignore: Untrack .pyscn/ (bodai 2026-08-20)
+- mailgun-mcp: Bootstrap [tool.crackerjack] section + uv sync upgrade
+- mailgun-mcp: Gitignore .lycheecache (file, not just dir)
+- mailgun-mcp: Gitignore .lycheecache + .hypothesis
+- mailgun-mcp: Refresh oneiric + mcp-common deps
+- mailgun-mcp: Untrack .lycheecache + .hypothesis runtime artifacts
+- Untrack previously-tracked runtime artifacts (bodai cleanup 2026-08-17)
+
 ## [0.3.1] - 2026-08-16
 
 ### Documentation
