@@ -6,12 +6,53 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import hmac
+from functools import lru_cache
+
 import httpx
 from fastmcp import FastMCP
 from httpx import BasicAuth as HTTPXBasicAuth
 from mcp_common.health import register_http_health_route
+from oneiric.actions.security import (
+    SecuritySignatureAction,
+    SecuritySignatureSettings,
+)
+from oneiric.actions.workflow import (
+    WorkflowNotifyAction,
+    WorkflowNotifySettings,
+)
 
 from mailgun_mcp import __version__
+
+
+@lru_cache(maxsize=1)
+def _webhook_signature_action() -> SecuritySignatureAction:
+    """Return the process-wide signature action used for webhook verification.
+
+    Uses the Mailgun signing scheme: HMAC-SHA256(api_key, timestamp || token).
+    """
+
+    return SecuritySignatureAction(
+        settings=SecuritySignatureSettings(
+            algorithm="sha256",
+            encoding="hex",
+            header_name="signature",
+            include_timestamp=False,
+        )
+    )
+
+
+@lru_cache(maxsize=1)
+def _webhook_notify_action() -> WorkflowNotifyAction:
+    """Return the process-wide notify action used for webhook events."""
+
+    return WorkflowNotifyAction(
+        settings=WorkflowNotifySettings(
+            default_channel="mailgun-webhook",
+            default_level="info",
+            require_message=True,
+        )
+    )
 
 
 class BasicAuth:
@@ -1377,6 +1418,72 @@ async def delete_webhook(webhook_type: str) -> dict[str, Any]:
     }
 
 
+async def verify_webhook_signature(
+    timestamp: str, token: str, signature: str
+) -> dict[str, Any]:
+    """Verify an inbound Mailgun webhook signature.
+
+    Mailgun signs inbound webhooks with HMAC-SHA256 of ``timestamp || token``
+    using the API key as the secret. The signature arrives as ``signature=<hex>``
+    in the webhook POST body. This tool routes verification through the canonical
+    Oneiric ``SecuritySignatureAction`` so the signing envelope is identical
+    across every Bodai component that needs to verify inbound webhooks.
+
+    Args:
+        timestamp: Value from the ``timestamp`` form field.
+        token: Value from the ``token`` form field.
+        signature: Value from the ``signature`` form field.
+
+    Returns:
+        Dict with ``verified`` (bool), ``algorithm``, and on mismatch ``expected``
+        so the caller can log a non-sensitive failure hint.
+    """
+    api_key = get_mailgun_api_key()
+    if not api_key:
+        return {
+            "verified": False,
+            "error": "MAILGUN_API_KEY environment variable is not set.",
+        }
+
+    result = await _webhook_signature_action().execute(
+        {
+            "secret": api_key,
+            "message": f"{timestamp}{token}",
+            "algorithm": "sha256",
+            "encoding": "hex",
+        }
+    )
+    expected = result["signature"]
+    return {
+        "verified": hmac.compare_digest(expected, signature),
+        "algorithm": result["algorithm"],
+        "encoding": result["encoding"],
+    }
+
+
+async def notify_webhook_event(
+    message: str,
+    channel: str = "mailgun-webhook",
+    level: str = "info",
+    context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Log a webhook event using the canonical Oneiric notification envelope.
+
+    Replaces ad-hoc ``logger.info(...)`` calls in webhook handlers so every
+    webhook event lands in the same audit/log pipeline with the same shape.
+    The ``context`` dict is forwarded verbatim so callers can attach delivery
+    metadata (message-id, recipient, retry count, etc.).
+    """
+    return await _webhook_notify_action().execute(
+        {
+            "message": message,
+            "channel": channel,
+            "level": level,
+            "context": context or {},
+        }
+    )
+
+
 # Global server instance for lazy initialization
 _mcp_instance: FastMCP | None = None
 
@@ -1664,7 +1771,14 @@ def register_suppression_tools(server: FastMCP) -> None:
 
 
 def register_webhook_tools(server: FastMCP) -> None:
-    """Register the webhook_tools group (4 tools)."""
+    """Register the webhook_tools group (6 tools).
+
+    The last two entries — ``verify_webhook_signature`` and
+    ``notify_webhook_event`` — are Oneiric action-kit consumers (W3): they
+    replace hand-rolled HMAC verification and ad-hoc logger.info() webhook
+    events with the canonical SecuritySignatureAction and WorkflowNotifyAction
+    envelopes so every Bodai component speaks the same signing/notify shape.
+    """
     server.add_tool(
         Tool.from_function(
             fn=get_webhooks,
@@ -1694,6 +1808,29 @@ def register_webhook_tools(server: FastMCP) -> None:
             fn=delete_webhook,
             name="delete_webhook",
             description="Delete a webhook from Mailgun",
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=verify_webhook_signature,
+            name="verify_webhook_signature",
+            description=(
+                "Verify an inbound Mailgun webhook signature using the "
+                "Oneiric SecuritySignatureAction envelope (HMAC-SHA256)."
+            ),
+            output_schema=None,
+        )
+    )
+    server.add_tool(
+        Tool.from_function(
+            fn=notify_webhook_event,
+            name="notify_webhook_event",
+            description=(
+                "Log a webhook event through the Oneiric WorkflowNotifyAction "
+                "envelope so it lands in the same audit pipeline as other Bodai "
+                "components."
+            ),
             output_schema=None,
         )
     )
