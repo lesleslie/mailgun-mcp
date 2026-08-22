@@ -1,72 +1,46 @@
-/.benchmarks/
-/.claude/
-/htmlcov/
-/__pycache__/
-__pycache__/
-/.venv/
-/.envrc
-/.coverage
+# Canonical Bodai runtime artifacts (per bodai-canonical-gitignore-runtime-artifacts).
+# Apply the same block at every Bodai repo so `.cache/`, `.crackerjack/`,
+# coverage reports, and editor backouts never pollute the index.
 
-# Crackerjack patterns
-
-
-
-
-# Build/Distribution
-# Caches
-# Coverage
-# Crackerjack specific
-# Development
-*.egg-info/
-*.pyc
-.DS_STORE
-.coverage*
-.crackerjack-*
-.mypy_cache/
-.pytest_cache/
-.ruff_cache/
-.venv/
-/.benchmarks/
-/.claude/
-/.coverage
-/.envrc
-/.venv/
-/__pycache__/
-/build/
-/dist/
-/htmlcov/
-__pycache__/
-crackerjack-ai-debug-*.log
-crackerjack-debug-*.log
+# --- Tooling caches ----------------------------------------------------
+.cache/
+.crackerjack/
+.complexipy_cache/
+.htmlcov/
 htmlcov/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Backup Files (added by gitignore audit)
-# ============================================================================
+# --- Coverage / quality reports ---------------------------------------
+.coverage
+.coverage.*
+coverage.json
+coverage.xml
+htmlcov/
+.lychee*
+.betterleaks.toml
+
+# --- Local config (per repo) -------------------------------------------
+local-config.yaml
+.env
+.env.local
+.env.*.local
+
+# --- Backup / editor scratch -------------------------------------------
+*.bak
 *.backup
 *.backup.json
-*.bak
-/.backups/
-/.backup/
-.backups/
-.backup/
+*~
+.DS_Store
+.idea/
+.vscode/
+*.swp
 
-# Runtime artifacts (bodai cleanup 2026-08-17)
-.crackerjack/
-.crackerjack/outputs/
-.crackerjack-state/
-.crackerjack-hooks-updated/
-.crackerjack-mcp/
-.oneiric_cache/
-*.bak2
-*.backup.*
-coverage.json
-*.pyo
-*.pyd
-example.mcp.json
-
-# Canonical runtime-artifact patterns (bodai cleanup 2026-08-20)
-.pyscn/
-
-# lychee + pytest-hypothesis caches (canonical sweep 2026-08-20)
-.lycheecache
-.hypothesis/
+# --- Python bytecode ---------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
