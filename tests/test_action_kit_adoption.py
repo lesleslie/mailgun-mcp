@@ -13,10 +13,12 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import hmac
+import time
 
 import pytest
 
 from mailgun_mcp.main import (
+    WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS,
     _webhook_notify_action,
     _webhook_signature_action,
     notify_webhook_event,
@@ -43,7 +45,10 @@ def test_signature_action_is_singleton() -> None:
     action = _webhook_signature_action()
     assert action._settings.algorithm == "sha256"
     assert action._settings.encoding == "hex"
-    assert action._settings.header_name == "signature"
+    # header_name is left at the kit default (X-Oneiric-Signature); the
+    # mailgun wrapper doesn't emit outbound headers so the setting is
+    # never used for outbound signing.
+    assert action._settings.header_name == "X-Oneiric-Signature"
     # Same instance returned across calls (lru_cache hit).
     assert _webhook_signature_action() is action
 
@@ -58,7 +63,7 @@ def test_notify_action_is_singleton() -> None:
 def test_verify_webhook_signature_accepts_valid(monkeypatch: pytest.MonkeyPatch) -> None:
     """A signature computed with the API key over timestamp||token verifies."""
     api_key = "key-deadbeefcafebabe1234"
-    timestamp = "1700000000"
+    timestamp = str(int(time.time()))
     token = "abcdef0123456789"
     expected = hmac.new(
         api_key.encode("utf-8"),
@@ -81,7 +86,7 @@ def test_verify_webhook_signature_rejects_invalid(
     """A wrong signature fails verification without leaking timing info."""
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: "real-key")
 
-    result = _run(verify_webhook_signature("1700000000", "tok", "0" * 64))
+    result = _run(verify_webhook_signature(str(int(time.time())), "tok", "0" * 64))
 
     assert result["verified"] is False
     assert result["algorithm"] == "sha256"
@@ -92,10 +97,59 @@ def test_verify_webhook_signature_errors_when_no_api_key(
 ) -> None:
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: None)
 
-    result = _run(verify_webhook_signature("1700000000", "tok", "x"))
+    result = _run(verify_webhook_signature(str(int(time.time())), "tok", "x"))
 
     assert result["verified"] is False
     assert "MAILGUN_API_KEY" in result["error"]
+
+
+def test_verify_webhook_signature_rejects_stale_timestamp(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Replay protection: signatures older than the skew window are rejected."""
+    api_key = "k"
+    old_ts = int(time.time()) - WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS - 60
+    token = "tok"
+    # Build a valid-looking signature; the check should reject before compare.
+    valid_sig = hmac.new(
+        api_key.encode(), f"{old_ts}{token}".encode(), hashlib.sha256
+    ).hexdigest()
+
+    monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: api_key)
+    result = _run(verify_webhook_signature(str(old_ts), token, valid_sig))
+
+    assert result["verified"] is False
+    assert result["error"] == "signature expired"
+
+
+def test_verify_webhook_signature_rejects_future_timestamp(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Far-future timestamps are also rejected (clock-skew / forgery)."""
+    api_key = "k"
+    future_ts = int(time.time()) + WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS + 60
+    token = "tok"
+    valid_sig = hmac.new(
+        api_key.encode(), f"{future_ts}{token}".encode(), hashlib.sha256
+    ).hexdigest()
+
+    monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: api_key)
+    result = _run(verify_webhook_signature(str(future_ts), token, valid_sig))
+
+    assert result["verified"] is False
+    assert result["error"] == "signature expired"
+
+
+def test_verify_webhook_signature_rejects_non_numeric_timestamp(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    api_key = "k"
+    monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: api_key)
+
+    result = _run(verify_webhook_signature("not-a-number", "tok", "x"))
+
+    assert result["verified"] is False
+    assert result["error"] == "invalid timestamp"
 
 
 def test_notify_webhook_event_returns_logged_envelope() -> None:
@@ -149,7 +203,7 @@ def test_verify_signature_uses_oneiric_action_not_reimplemented_hmac(
     monkeypatch.setattr("mailgun_mcp.main._webhook_signature_action", lambda: _Spy())
     monkeypatch.setattr("mailgun_mcp.main.get_mailgun_api_key", lambda: "key")
 
-    _run(verify_webhook_signature("1700000000", "tok", "0" * 64))
+    _run(verify_webhook_signature(str(int(time.time())), "tok", "0" * 64))
 
     assert called["flag"] is True, (
         "verify_webhook_signature must route through SecuritySignatureAction"

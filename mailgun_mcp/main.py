@@ -30,16 +30,24 @@ def _webhook_signature_action() -> SecuritySignatureAction:
     """Return the process-wide signature action used for webhook verification.
 
     Uses the Mailgun signing scheme: HMAC-SHA256(api_key, timestamp || token).
+    The ``header_name`` setting is for outbound signing headers (which
+    mailgun-mcp doesn't currently emit) so it's deliberately left at the
+    kit default.
     """
 
     return SecuritySignatureAction(
         settings=SecuritySignatureSettings(
             algorithm="sha256",
             encoding="hex",
-            header_name="signature",
             include_timestamp=False,
         )
     )
+
+
+# Replay-protection window for inbound webhooks. Mailgun recommends
+# rejecting signatures older than "a few minutes"; we use 5 minutes as
+# a conservative default that matches the canonical Bodai envelope.
+WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS = 300
 
 
 @lru_cache(maxsize=1)
@@ -1430,14 +1438,22 @@ async def verify_webhook_signature(
     across every Bodai component that needs to verify inbound webhooks.
 
     Args:
-        timestamp: Value from the ``timestamp`` form field.
+        timestamp: Value from the ``timestamp`` form field (epoch seconds).
         token: Value from the ``token`` form field.
         signature: Value from the ``signature`` form field.
 
     Returns:
-        Dict with ``verified`` (bool), ``algorithm``, and on mismatch ``expected``
-        so the caller can log a non-sensitive failure hint.
+        Dict with ``verified`` (bool), ``algorithm``, ``encoding``, and on
+        rejection ``error`` so the caller can log a non-sensitive failure hint.
+
+    Replay protection: signatures older than
+    ``WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS`` are rejected to prevent an
+    attacker from replaying a captured ``timestamp + token + signature``
+    triple. This is the canonical Mailgun guidance ("not more than a few
+    minutes old").
     """
+    import time
+
     api_key = get_mailgun_api_key()
     if not api_key:
         return {
@@ -1445,12 +1461,28 @@ async def verify_webhook_signature(
             "error": "MAILGUN_API_KEY environment variable is not set.",
         }
 
+    try:
+        ts_int = int(timestamp)
+    except (TypeError, ValueError):
+        return {
+            "verified": False,
+            "error": "invalid timestamp",
+            "algorithm": "sha256",
+            "encoding": "hex",
+        }
+
+    if abs(time.time() - ts_int) > WEBHOOK_MAX_TIMESTAMP_SKEW_SECONDS:
+        return {
+            "verified": False,
+            "error": "signature expired",
+            "algorithm": "sha256",
+            "encoding": "hex",
+        }
+
     result = await _webhook_signature_action().execute(
         {
             "secret": api_key,
             "message": f"{timestamp}{token}",
-            "algorithm": "sha256",
-            "encoding": "hex",
         }
     )
     expected = result["signature"]
