@@ -31,7 +31,7 @@ http_host = "127.0.0.1"
 enable_http_transport = true
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py314"
 line-length = 88
 fix = false
 unsafe-fixes = true
