@@ -182,7 +182,7 @@ async def test_create_domain_with_all_parameters(monkeypatch):
         result = await create_domain.run(
             {
                 "domain_name": "newdomain.com",
-                "smtp_password": "password123",
+                "smtp_password": "password123",  # betterleaks:allow (test fixture)
                 "spam_action": "tag",
                 "wildcard": True,
                 "ips": "127.0.0.1,127.0.0.2",

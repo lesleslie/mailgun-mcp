@@ -127,7 +127,7 @@ class _TemplateDomainModelTests:
             "created_at": "Tue, 20 Nov 2019 00:00:00 UTC",
             "wildcard": False,
             "spam_action": "disabled",
-            "smtp_password": "super_secret",
+            "smtp_password": "super_secret",  # betterleaks:allow (test fixture)
             "state": "active",
             "is_disabled": False,
             "type": "custom",

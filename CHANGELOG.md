@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-08-28
+
+### Added
+
+- w3: Adopt security.signature + workflow.notify action kits
+
+### Fixed
+
+- w3: Add replay protection + drop dead header_name config
+
+### Documentation
+
+- readme: Bump Python badge from 3.13+ to 3.14+
+
+### Internal
+
+- Add canonical Bodai .gitignore
+- Add the 5 canonical Bodai patterns missing from W3 .gitignore
+- build: Standardize mailgun-mcp on hatchling backend
+- Bump requires-python to >=3.14
+- mailgun-mcp: Bump tool-config pins from 3.13 to 3.14
+- mailgun-mcp: Uv python pin 3.14
+
 ## [0.4.0] - 2026-08-20
 
 ### Added

@@ -348,7 +348,7 @@ async def test_create_domain_with_mock_response(monkeypatch):
         result = await create_domain.run(
             {
                 "domain_name": "newdomain.com",
-                "smtp_password": "password123",
+                "smtp_password": "password123",  # betterleaks:allow (test fixture)
                 "wildcard": False,
             }
         )
