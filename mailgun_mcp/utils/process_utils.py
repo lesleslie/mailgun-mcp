@@ -28,7 +28,7 @@ class ServerManager:
         try:
             pid = int(self.pid_file.read_text().strip())
             return pid
-        except (OSError, ValueError):
+        except OSError, ValueError:
             return None
 
     def is_running(self) -> bool:

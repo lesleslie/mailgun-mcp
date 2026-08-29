@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import base64
+import hmac
 import os
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
-
-import hmac
-from functools import lru_cache
 
 import httpx
 from fastmcp import FastMCP
@@ -1463,7 +1462,7 @@ async def verify_webhook_signature(
 
     try:
         ts_int = int(timestamp)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return {
             "verified": False,
             "error": "invalid timestamp",

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mailgun-mcp"
-version = "0.5.0"
+version = "0.5.1"
 description = "Unofficial MCP server for the Mailgun API"
 authors = [
     { name = "Les Leslie", email = "les@wedgwoodwebworks.com" },
@@ -15,9 +15,6 @@ dependencies = [
     "mcp-common>=0.18.0",
     "oneiric>=0.16.0",
 ]
-
-[tool.uv.sources]
-mcp-common = { path = "../mcp-common", editable = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["mailgun_mcp"]
