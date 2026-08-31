@@ -8,9 +8,9 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-import httpx
+import httpx2 as httpx
 from fastmcp import FastMCP
-from httpx import BasicAuth as HTTPXBasicAuth
+from httpx2 import BasicAuth as HTTPXBasicAuth
 from mcp_common.health import register_http_health_route
 from oneiric.actions.security import (
     SecuritySignatureAction,
@@ -261,7 +261,7 @@ async def _http_request(method: str, url: str, **kwargs: Any) -> httpx.Response:
     Returns:
         HTTP response
     """
-    import httpx
+    import httpx2 as httpx
 
     async with httpx.AsyncClient() as client:
         method_upper = method.upper()

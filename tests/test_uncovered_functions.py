@@ -88,7 +88,7 @@ def test_normalize_auth_for_provider_without_auth():
 @pytest.mark.asyncio
 async def test_http_request_get():
     """Test _http_request with GET method"""
-    with patch("httpx.AsyncClient") as MockClient:
+    with patch("httpx2.AsyncClient") as MockClient:
         mock_instance = AsyncMock()
         MockClient.return_value.__aenter__.return_value = mock_instance
 
@@ -104,7 +104,7 @@ async def test_http_request_get():
 @pytest.mark.asyncio
 async def test_http_request_post():
     """Test _http_request with POST method"""
-    with patch("httpx.AsyncClient") as MockClient:
+    with patch("httpx2.AsyncClient") as MockClient:
         mock_instance = AsyncMock()
         MockClient.return_value.__aenter__.return_value = mock_instance
 
@@ -122,7 +122,7 @@ async def test_http_request_post():
 @pytest.mark.asyncio
 async def test_http_request_put():
     """Test _http_request with PUT method"""
-    with patch("httpx.AsyncClient") as MockClient:
+    with patch("httpx2.AsyncClient") as MockClient:
         mock_instance = AsyncMock()
         MockClient.return_value.__aenter__.return_value = mock_instance
 
@@ -140,7 +140,7 @@ async def test_http_request_put():
 @pytest.mark.asyncio
 async def test_http_request_delete():
     """Test _http_request with DELETE method"""
-    with patch("httpx.AsyncClient") as MockClient:
+    with patch("httpx2.AsyncClient") as MockClient:
         mock_instance = AsyncMock()
         MockClient.return_value.__aenter__.return_value = mock_instance
 
@@ -156,7 +156,7 @@ async def test_http_request_delete():
 @pytest.mark.asyncio
 async def test_http_request_other_method():
     """Test _http_request with other HTTP method"""
-    with patch("httpx.AsyncClient") as MockClient:
+    with patch("httpx2.AsyncClient") as MockClient:
         mock_instance = AsyncMock()
         MockClient.return_value.__aenter__.return_value = mock_instance
 

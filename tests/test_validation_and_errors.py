@@ -337,7 +337,7 @@ class TestNetworkErrorHandling:
 
         with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
             instance = MockAsyncClient.return_value.__aenter__.return_value
-            import httpx
+            import httpx2 as httpx
 
             instance.post.side_effect = httpx.ConnectError("Connection refused")
 
@@ -357,7 +357,7 @@ class TestNetworkErrorHandling:
 
         with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
             instance = MockAsyncClient.return_value.__aenter__.return_value
-            import httpx
+            import httpx2 as httpx
 
             instance.post.side_effect = httpx.ConnectError("DNS resolution failed")
 
@@ -377,7 +377,7 @@ class TestNetworkErrorHandling:
 
         with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
             instance = MockAsyncClient.return_value.__aenter__.return_value
-            import httpx
+            import httpx2 as httpx
 
             instance.post.side_effect = httpx.ReadTimeout(
                 "Request read timed out", request=None

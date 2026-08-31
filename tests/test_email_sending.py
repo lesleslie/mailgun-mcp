@@ -495,7 +495,7 @@ class TestErrorHandling:
         with patch("mailgun_mcp.main.httpx.AsyncClient") as MockAsyncClient:
             instance = MockAsyncClient.return_value.__aenter__.return_value
             # Simulate timeout
-            import httpx
+            import httpx2 as httpx
 
             instance.post.side_effect = httpx.TimeoutException(
                 "Request timed out", request=None
