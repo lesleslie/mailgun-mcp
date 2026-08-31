@@ -201,12 +201,14 @@ def test_decision_doc_exists_at_tracked_path() -> None:
 
 @pytest.mark.no_tool_wrapper
 @pytest.mark.asyncio
-async def test_full_registers_all_31_tools(monkeypatch: pytest.MonkeyPatch) -> None:
-    """FULL profile must register all 31 mailgun tools + discover_tools = 32 total.
+async def test_full_registers_all_33_tools(monkeypatch: pytest.MonkeyPatch) -> None:
+    """FULL profile must register all 33 mailgun tools + discover_tools = 34 total.
 
-    Behavioral parity: original decorator-mode registered 31 tools at import.
-    The W0 helper additionally registers ``discover_tools`` (the meta-tool
-    the W2b.1 spec requires).
+    The original decorator-mode registered 31 tools; the W3 action-kit adoption
+    added ``verify_webhook_signature`` and ``notify_webhook_event`` to the
+    webhook group (Oneiric ``SecuritySignatureAction`` and
+    ``WorkflowNotifyAction`` consumers). The W0 helper additionally registers
+    ``discover_tools`` (the meta-tool the W2b.1 spec requires).
     """
     monkeypatch.setenv("MAILGUN_TOOL_PROFILE", "full")
     from fastmcp import FastMCP
@@ -217,7 +219,7 @@ async def test_full_registers_all_31_tools(monkeypatch: pytest.MonkeyPatch) -> N
     await apply_mailgun_tool_profile(server)
     names = {t.name for t in await server.list_tools()}
 
-    # All 31 mailgun tools + discover_tools
+    # All 33 mailgun tools + discover_tools
     expected_mailgun = {
         "send_message",
         "get_domains", "get_domain", "create_domain", "delete_domain", "verify_domain",
@@ -228,12 +230,13 @@ async def test_full_registers_all_31_tools(monkeypatch: pytest.MonkeyPatch) -> N
         "get_routes", "get_route", "create_route", "update_route", "delete_route",
         "get_templates", "get_template", "create_template", "update_template", "delete_template",
         "get_webhooks", "get_webhook", "create_webhook", "delete_webhook",
+        "verify_webhook_signature", "notify_webhook_event",
     }
     assert expected_mailgun.issubset(names), (
         f"FULL profile missing tools: {sorted(expected_mailgun - names)}"
     )
     assert "discover_tools" in names, "W0 helper must register discover_tools meta-tool"
-    assert len(names) == 32, f"Expected 32 (31 + discover_tools); got {len(names)}: {sorted(names)}"
+    assert len(names) == 34, f"Expected 34 (33 + discover_tools); got {len(names)}: {sorted(names)}"
 
 
 @pytest.mark.no_tool_wrapper
