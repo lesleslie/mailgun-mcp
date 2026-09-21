@@ -89,9 +89,9 @@ graph TD
    uvicorn mailgun_mcp.main:http_app --factory
    ```
 
-## Installation via Bodai Marketplace
+## Installation via Claude Code marketplace
 
-This repo ships a Bodai Claude Code plugin manifest (`.claude-plugin/plugin.json`) plus a colocated `.mcp.json` and three slash commands in `commands/`. To install via the Bodai marketplace, register the marketplace with Claude Code, then install the plugin by name. Once installed, the slash commands `/mailgun-send`, `/mailgun-domains`, and `/mailgun-events` become available alongside the `mcp__mailgun__*` tools. The default HTTP bind is `127.0.0.1:3039`; start the server with `uv run python -m mailgun_mcp` before invoking the commands.
+This repo ships a Claude Code plugin manifest (`.claude-plugin/plugin.json`) plus a colocated `.mcp.json` and three slash commands in `commands/`. To install, register the [www-mcp-servers marketplace](https://github.com/lesleslie/www-mcp-servers) with Claude Code, then install the plugin by name. Once installed, the slash commands `/mailgun-send`, `/mailgun-domains`, and `/mailgun-events` become available alongside the `mcp__mailgun__*` tools. The default HTTP bind is `127.0.0.1:3039`; start the server with `uv run python -m mailgun_mcp` before invoking the commands.
 
 ### Configuration
 
