@@ -210,3 +210,7 @@ The MCP server exposes the following tools:
 - `get_webhook`: Get a specific webhook from Mailgun
 - `create_webhook`: Create or update a webhook in Mailgun
 - `delete_webhook`: Delete a webhook from Mailgun
+
+Built on [Oneiric](https://github.com/lesleslie/oneiric) for runtime configuration
+and [mcp-common](https://github.com/lesleslie/mcp-common) for the FastMCP
+baseline. [Crackerjack](https://github.com/lesleslie/crackerjack) gates every commit.
